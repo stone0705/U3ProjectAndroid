@@ -1,0 +1,12 @@
+http://ccckmit.wikidot.com/code:searcher
+http://stackoverflow.com/questions/13359049/how-to-get-server-message-correctly
+http://developer.android.com/guide/topics/data/data-storage.html
+https://crackstation.net/hashing-security.htm
+http://shovachu-coding.blogspot.tw/2012/11/java-socket.html
+http://www.javaworld.com.tw/jute/post/view?bid=20&id=6569&sty=1&tpg=1&age=0
+http://glblong.blog.51cto.com/3058613/1290645
+http://www.2cto.com/kf/201402/281526.html
+http://givemepass.blogspot.tw/2011/11/progressdialog.html
+https://www.ptt.cc/bbs/AndroidDev/M.1370641609.A.1BF.html
+http://fecbob.pixnet.net/blog/post/35563586-%5B轉%5Dandroid-gesturedetector功能和使用
+http://www.mkyong.com/android/how-to-set-default-activity-for-android-application/
