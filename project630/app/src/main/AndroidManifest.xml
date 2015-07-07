@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.stone.project63" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".invoteActivity"
+            android:label="@string/title_activity_invote" >
+        </activity>
+        <activity
+            android:name=".inmeetingActivity"
+            android:label="@string/title_activity_inmeeting" >
+        </activity>
+        <activity
+            android:name=".inteamschduleActivity"
+            android:label="@string/title_activity_inteamschdule" >
+        </activity>
+        <activity
+            android:name=".innoteActivity"
+            android:label="@string/title_activity_innote" >
+        </activity>
+        <activity
+            android:name=".masterpage"
+            android:label="@string/title_activity_masterpage" >
+        </activity>
+    </application>
+
+</manifest>

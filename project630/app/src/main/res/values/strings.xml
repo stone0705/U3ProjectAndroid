@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">project63</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_setting">settingActivity</string>
+    <string name="title_activity_note">noteActivity</string>
+    <string name="title_activity_vote">voteActivity</string>
+    <string name="title_activity_meeting">meetingActivity</string>
+    <string name="title_activity_invote">invoteActivity</string>
+    <string name="title_activity_teamschdule">teamschduleActivity</string>
+    <string name="title_activity_inmeeting">inmeetingActivity</string>
+    <string name="title_activity_inteamschdule">inteamschduleActivity</string>
+    <string name="title_activity_innote">innoteActivity</string>
+    <string name="title_activity_masterpage">masterpage</string>
+
+</resources>
