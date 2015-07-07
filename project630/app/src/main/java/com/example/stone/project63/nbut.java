@@ -19,7 +19,6 @@ public class nbut extends Button {
         super.setTextSize(12);
         super.setClickable(true);
         super.setFocusable(true);
-
         super.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

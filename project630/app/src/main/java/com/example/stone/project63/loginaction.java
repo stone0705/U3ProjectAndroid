@@ -27,7 +27,7 @@ public class loginaction implements Runnable{
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write("login:"+acc+":"+password+"\n");
+            bw.write(1010+":"+acc+":"+password+"\n");
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             int time = 0;

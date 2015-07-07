@@ -75,47 +75,6 @@ public class inmeetingActivity extends Activity {
         });
     }
 
-    public void onPause(){
-        super.onPause();
-        try{
-            BufferedWriter bw;
-            bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-            bw.write("123");
-            bw.flush();
-            socket.close();
-            finish();
-        }
-        catch(Exception ex){}
-
-    }
-    @Override
-    public void onStop(){
-        super.onStop();
-        try{
-            BufferedWriter bw;
-            bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-            bw.write("123");
-            bw.flush();
-            socket.close();
-            finish();
-        }
-        catch(Exception ex){}
-
-    }
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        try{
-            BufferedWriter bw;
-            bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-            bw.write("123");
-            bw.flush();
-            socket.close();
-        }
-        catch(Exception ex){}
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,12 +89,10 @@ public class inmeetingActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -170,17 +170,19 @@ public class masterpage extends Activity implements View.OnTouchListener {
         switch(state){
             case 1:{
                 note.getBackground().setColorFilter(high);
-                Button temp = new Button(masterpage.this);
                 content.removeAllViews();
                 intent.setClass(masterpage.this,innoteActivity.class);
-                temp.setText("note 1");
-                temp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(intent);
-                    }
-                });
-                content.addView(temp);
+                for(int i = 0;i<3;i++){
+                    Button temp = new Button(masterpage.this);
+                    temp.setText("note 1");
+                    temp.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(intent);
+                        }
+                    });
+                    content.addView(temp);
+                }
                 break;
             }
             case 2:{
