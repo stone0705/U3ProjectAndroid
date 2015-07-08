@@ -10,3 +10,4 @@ http://givemepass.blogspot.tw/2011/11/progressdialog.html
 https://www.ptt.cc/bbs/AndroidDev/M.1370641609.A.1BF.html
 http://fecbob.pixnet.net/blog/post/35563586-%5B轉%5Dandroid-gesturedetector功能和使用
 http://www.mkyong.com/android/how-to-set-default-activity-for-android-application/
+http://developer.android.com/reference/android/os/AsyncTask.html
