@@ -3,6 +3,9 @@ package com.example.stone.project63;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +22,8 @@ public class MainActivity extends Activity {
     Intent intent;
     EditText account;
     EditText password;
-    loginaction logina;
+    public static int result;
+    public static boolean asyncfin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +35,21 @@ public class MainActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                result = 0;
+                asyncfin = false;
+                ProgressDialog dialog = ProgressDialog.show(MainActivity.this,"讀取中", "請等待3秒...", true);
+                AsyncLoginAction logina = new AsyncLoginAction(dialog);
+                logina.execute(account.getText().toString(),password.getText().toString());
+                while (!asyncfin){}
+                System.out.println("main  "+result);
+                if(result == 1){
+                    intent.setClass(MainActivity.this,masterpage.class);
+                    startActivity(intent);
+                }
+                /*
                 logina = new loginaction(account.getText().toString(),password.getText().toString());
                 Thread thread = new Thread(logina);
                 thread.start();
-                final ProgressDialog dialog = ProgressDialog.show(MainActivity.this,"讀取中", "請等待3秒...", true);
                 new Thread(new Runnable(){
                     @Override
                     public void run() {
@@ -57,6 +72,7 @@ public class MainActivity extends Activity {
                     logina.pass = false;
                     startActivity(intent);
                 }
+                */
             }
         });
     }
@@ -81,5 +97,13 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }
