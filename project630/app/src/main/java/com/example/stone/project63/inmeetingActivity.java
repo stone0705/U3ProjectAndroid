@@ -2,6 +2,7 @@ package com.example.stone.project63;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -37,13 +38,16 @@ public class inmeetingActivity extends Activity {
     Socket socket;
     String tmp;
     String selfstring;
+    StringRule Sr;
     LinearLayout linearLayout;
     PopupWindow mPopupWindow;
-
+    SharedPreferences settings;
+    final String STORE_NAME = "Settings";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inmeeting);
+        settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
         main = (LinearLayout)findViewById(R.id.linear);
         Button a = new Button(this);
         scrollView = (ScrollView)findViewById(R.id.addscrollView);
@@ -53,17 +57,17 @@ public class inmeetingActivity extends Activity {
         linearLayout = (LinearLayout)findViewById(R.id.FrameLayout01);
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         final View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);
-        mPopupWindow = new PopupWindow(popupWindow, 100, 130);
+        mPopupWindow = new PopupWindow(popupWindow, 300, 330);
         Thread t = new Thread(readData);
         t.start();
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
-                    if(socket.isConnected()){
+                    if(socket.isConnected()&&!text.getText().toString().equals("")){
                         BufferedWriter bw;
                         bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-                        selfstring = name.getText()+":"+text.getText()+"\n";
+                        selfstring = StringRule.standard(5,"1031",settings.getString("account",""),text.getText().toString(),"黑社會","aaa");
                         bw.write(selfstring);
                         bw.flush();
                     }
@@ -100,10 +104,11 @@ public class inmeetingActivity extends Activity {
         public void run() {
             LinearLayout.LayoutParams self = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             self.gravity = Gravity.RIGHT;
-            if(tmp.equals("100")){
-                main.addView(new nbut(inmeetingActivity.this,selfstring,mPopupWindow),self);
+            Sr= new StringRule(tmp);
+            if(Sr.dString[1].equals(settings.getString("account",""))){
+                main.addView(new nbut(inmeetingActivity.this,Sr.dString[2],mPopupWindow),self);
             }else{
-                main.addView(new nbut(inmeetingActivity.this,tmp,mPopupWindow));
+                main.addView(new nbut(inmeetingActivity.this,Sr.dString[2],mPopupWindow));
             }
             scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
@@ -114,13 +119,17 @@ public class inmeetingActivity extends Activity {
             InetAddress serverIp;
 
             try {
-                serverIp = InetAddress.getByName("220.129.74.90");
+                serverIp = InetAddress.getByName("10.0.2.2");
                 int serverPort = 5050;
                 socket = new Socket(serverIp, serverPort);
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()));
-
+                BufferedWriter bw;
+                bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
+                selfstring = StringRule.standard(5,"1030",settings.getString("account",""),settings.getString("android_id",""),"黑社會","aaa");
+                bw.write(selfstring);
+                bw.flush();
                 while (socket.isConnected()) {
                     tmp = br.readLine();
 

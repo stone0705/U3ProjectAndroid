@@ -1,16 +1,21 @@
 package com.example.stone.project63;
 
-/**
- * Created by stone on 2015/7/7.
- */
-//split with ":" and first is rule number
+import java.util.HashMap;
+
+//split with ":" and first is rule number 
 public class StringRule {
     String[] dString;
+    static HashMap rulemap = new HashMap<String,Integer>();
     public StringRule(String msg){
         String[] findrule = msg.split(":");
+        rulemap.put("n1010", 3);
+        rulemap.put("n1030", 5);
+        rulemap.put("n1031", 5);
+        rulemap.put("n2030", 3);
         dString = divide(msg,rule(findrule[0]));
+
     }
-    String[] divide(String msg,int number){
+    private String[] divide(String msg,int number){
         String[] answer = new String[number];
         int state = 0;
         int index = 0;
@@ -50,18 +55,18 @@ public class StringRule {
     }
 
     int rule(String findrule){
-        int answer = 0;
-        switch(findrule){
-            case "1010":{
-                answer = 3;
-                break;
-            }
-            case "1020":{
-                answer = 3;
-                break;
-            }
+        return (int) rulemap.get("n"+findrule);
+    }
+
+    public static String standard(int number,String... word){
+        StringBuilder answer = new StringBuilder();
+        for(int i = 0;i<number;i++){
+            String temp = word[i];
+            temp=temp.replaceAll("/", "//");
+            temp=temp.replaceAll(":", "/:");
+            answer.append(temp+":");
         }
-        return answer;
+        return answer.toString()+"\n";
     }
 
 }

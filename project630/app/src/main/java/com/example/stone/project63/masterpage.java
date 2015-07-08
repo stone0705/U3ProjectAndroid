@@ -189,6 +189,7 @@ public class masterpage extends Activity implements View.OnTouchListener {
                 meeting.getBackground().setColorFilter(high);
                 content.removeAllViews();
                 intent.setClass(masterpage.this,inmeetingActivity.class);
+                startActivity(intent);
                 break;
             }
             case 3:{

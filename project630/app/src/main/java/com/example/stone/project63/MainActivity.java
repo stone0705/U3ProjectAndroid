@@ -3,9 +3,11 @@ package com.example.stone.project63;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +26,8 @@ public class MainActivity extends Activity {
     EditText password;
     public static int result;
     public static boolean asyncfin;
+    final String STORE_NAME = "Settings";
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,8 @@ public class MainActivity extends Activity {
         account = (EditText)findViewById(R.id.editText);
         password = (EditText)findViewById(R.id.editText2);
         intent = new Intent();
+        SharedPreferences settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
+        editor = settings.edit();
         login = (Button)findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,36 +49,13 @@ public class MainActivity extends Activity {
                 while (!asyncfin){}
                 System.out.println("main  "+result);
                 if(result == 1){
-                    intent.setClass(MainActivity.this,masterpage.class);
+                    editor.putString("account",account.getText().toString());
+                    String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                    editor.putString("android_id",androidId);
+                    editor.commit();
+                    intent.setClass(MainActivity.this, masterpage.class);
                     startActivity(intent);
                 }
-                /*
-                logina = new loginaction(account.getText().toString(),password.getText().toString());
-                Thread thread = new Thread(logina);
-                thread.start();
-                new Thread(new Runnable(){
-                    @Override
-                    public void run() {
-                        try{
-                            Thread.sleep(3000);
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                        }
-                        finally{
-                            dialog.dismiss();
-                        }
-                    }
-                }).start();
-                while(!logina.finish){}
-                logina.finish = false;
-                intent.setClass(MainActivity.this,masterpage.class);
-                System.out.println("main"+logina.pass);
-                if(logina.pass){
-                    logina.pass = false;
-                    startActivity(intent);
-                }
-                */
             }
         });
     }

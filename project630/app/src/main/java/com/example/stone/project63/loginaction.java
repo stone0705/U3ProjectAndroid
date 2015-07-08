@@ -27,7 +27,7 @@ public class loginaction implements Runnable{
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(1010+":"+acc+":"+password+"\n");
+            bw.write(1010+":"+acc+":"+password+":\n");
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             int time = 0;
@@ -50,3 +50,30 @@ public class loginaction implements Runnable{
         }
     }
 }
+                /*
+                logina = new loginaction(account.getText().toString(),password.getText().toString());
+                Thread thread = new Thread(logina);
+                thread.start();
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        try{
+                            Thread.sleep(3000);
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        finally{
+                            dialog.dismiss();
+                        }
+                    }
+                }).start();
+                while(!logina.finish){}
+                logina.finish = false;
+                intent.setClass(MainActivity.this,masterpage.class);
+                System.out.println("main"+logina.pass);
+                if(logina.pass){
+                    logina.pass = false;
+                    startActivity(intent);
+                }
+                */

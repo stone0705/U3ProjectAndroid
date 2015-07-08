@@ -15,7 +15,7 @@ import java.net.Socket;
  * Created by stone on 2015/7/8.
  */
 public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
-    final int LONGTIME = 800000;
+    final int LONGTIME = 80000;
     ProgressDialog dialog;
     public AsyncLoginAction(ProgressDialog dialog){
         this.dialog = dialog;
@@ -51,7 +51,7 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(1010+":"+params[0]+":"+params[1]+"\n");
+            bw.write(1010+":"+params[0]+":"+params[1]+":\n");
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             int time = 0;
