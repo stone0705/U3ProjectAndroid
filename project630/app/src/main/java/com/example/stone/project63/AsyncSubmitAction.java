@@ -14,10 +14,10 @@ import java.net.Socket;
 /**
  * Created by stone on 2015/7/8.
  */
-public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
+public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 80000;
     ProgressDialog dialog;
-    public AsyncLoginAction(ProgressDialog dialog){
+    public AsyncSubmitAction(ProgressDialog dialog){
         this.dialog = dialog;
     }
     @Override
@@ -31,8 +31,8 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
             @Override
             public void run() {
                 try{
-                    while(!AsyncLoginAction.this.getStatus().equals(AsyncTask.Status.FINISHED)&&!AsyncLoginAction.this.isCancelled())
-                    Thread.sleep(500);
+                    while(!AsyncSubmitAction.this.getStatus().equals(AsyncTask.Status.FINISHED)&&!AsyncSubmitAction.this.isCancelled())
+                        Thread.sleep(500);
 
                 }
                 catch(Exception e){
@@ -51,7 +51,7 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(1010+":"+params[0]+":"+params[1]+":\n");
+            bw.write(1000+":"+params[0]+":"+params[1]+":"+params[2]+":\n");
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             int time = 0;
@@ -61,14 +61,17 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
                 time++;
             }
             String answer = br.readLine();
+            socket.close();
             StringRule sr = new StringRule(answer);
-            MainActivity.pass = StringRule.isSucces(sr.dString[0]);
+            submit.response = StringRule.responseString(sr.dString[0]);
+            submit.pass = StringRule.isSucces(sr.dString[0]);
         }
         catch (Exception ex){
             System.out.println(ex.toString());
             result = 0;
         }
-        MainActivity.asyncfin = true;
+        System.out.println("thread"+result);
+        submit.asyncfin = true;
         return result;
     }
 

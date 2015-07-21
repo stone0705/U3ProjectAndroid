@@ -35,8 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:hint="帳號"
             android:ems="10"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnm"
+            android:maxLength="20"
             android:id="@+id/editText"
             android:layout_gravity="center_horizontal" />
 
@@ -54,6 +56,9 @@
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/editText2"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnm"
+            android:maxLength="30"
+            android:hint="密碼"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

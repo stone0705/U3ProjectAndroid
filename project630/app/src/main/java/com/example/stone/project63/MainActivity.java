@@ -21,10 +21,11 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
     Button login;
+    Button newuser;
     Intent intent;
     EditText account;
     EditText password;
-    public static int result;
+    public static boolean pass;
     public static boolean asyncfin;
     final String STORE_NAME = "Settings";
     SharedPreferences.Editor editor;
@@ -38,17 +39,18 @@ public class MainActivity extends Activity {
         SharedPreferences settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
         editor = settings.edit();
         login = (Button)findViewById(R.id.login);
+        newuser = (Button)findViewById(R.id.newuser);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                result = 0;
+                pass = false;
                 asyncfin = false;
                 ProgressDialog dialog = ProgressDialog.show(MainActivity.this,"讀取中", "請等待3秒...", true);
                 AsyncLoginAction logina = new AsyncLoginAction(dialog);
                 logina.execute(account.getText().toString(),password.getText().toString());
                 while (!asyncfin){}
-                System.out.println("main  "+result);
-                if(result == 1){
+                System.out.println("main  "+pass);
+                if(pass){
                     editor.putString("account",account.getText().toString());
                     String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                     editor.putString("android_id",androidId);
@@ -56,6 +58,13 @@ public class MainActivity extends Activity {
                     intent.setClass(MainActivity.this, masterpage.class);
                     startActivity(intent);
                 }
+            }
+        });
+        newuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.setClass(MainActivity.this,submit.class);
+                startActivity(intent);
             }
         });
     }
