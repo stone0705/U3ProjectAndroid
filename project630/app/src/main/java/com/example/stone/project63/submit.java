@@ -51,12 +51,17 @@ public class submit extends Activity {
             @Override
             public void onClick(View v) {
                 asyncfin = false;
-                ProgressDialog dialog = ProgressDialog.show(submit.this,"註冊中", "請等待...", true);
-                AsyncSubmitAction sub = new AsyncSubmitAction(dialog);
-                sub.execute(account.getText().toString(),password.getText().toString(),nickname.getText().toString());
-                System.out.println("1111");
-                while (!asyncfin){}
-                System.out.println("2222");
+                if(account.getText().toString().equals("") || password.getText().toString().equals("") || nickname.getText().toString().equals("")){
+                    response = "請輸入完所有項目";
+                    pass = false;
+                }else{
+                    ProgressDialog dialog = ProgressDialog.show(submit.this,"註冊中", "請等待...", true);
+                    AsyncSubmitAction sub = new AsyncSubmitAction(dialog);
+                    sub.execute(account.getText().toString(),password.getText().toString(),nickname.getText().toString());
+                    System.out.println("1111");
+                    while (!asyncfin){}
+                    System.out.println("2222");
+                }
                 alertDialog.setMessage(response);
                 alertDialog.show();
             }
