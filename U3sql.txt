@@ -1,0 +1,36 @@
+122.116.189.126
+49172
+		try{
+			String connectionUrl = "jdbc:sqlserver://122.116.189.126:49172;"+"databaseName=U3project;user=U3sa;password=lucky123;";
+			con = DriverManager.getConnection(connectionUrl);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+create table theuser(
+name varchar(20) not null,
+password varchar(64) not null,
+salt varchar(60) not null,
+nick_name nvarchar(20),
+primary key(name)
+);
+create table thegroup(
+ name nvarchar(30) not null,
+ founder varchar(20) foreign key references theuser(name),
+ number int ,
+ primary key(name , founder)
+ );
+
+create table group_user(
+ g_name nvarchar(30) ,
+ g_founder varchar(20) ,
+foreign key(g_name,g_founder) references thegroup(name,founder),
+ u_name varchar(20) foreign key references theuser(name),
+ rank int,
+ primary key(g_name,g_founder,u_name)
+ );
+create table chat(
+Id int not null identity(1, 1) primary key,
+
+);
