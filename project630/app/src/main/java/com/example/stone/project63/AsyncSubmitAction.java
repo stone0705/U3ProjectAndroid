@@ -62,9 +62,9 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
             }
             String answer = br.readLine();
             socket.close();
-            StringRule sr = new StringRule(answer);
-            submit.response = StringRule.responseString(sr.dString[0]);
-            submit.pass = StringRule.isSucces(sr.dString[0]);
+            String[] dString = StringRule.divide(answer);
+            submit.response = StringRule.responseString(dString[0]);
+            submit.pass = StringRule.isSucces(dString[0]);
         }
         catch (Exception ex){
             System.out.println(ex.toString());

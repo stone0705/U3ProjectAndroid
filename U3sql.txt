@@ -30,7 +30,23 @@ foreign key(g_name,g_founder) references thegroup(name,founder),
  rank int,
  primary key(g_name,g_founder,u_name)
  );
-create table chat(
+create table meeting(
 Id int not null identity(1, 1) primary key,
-
+start_time datetime,
+end_time datetime,
+title nvarchar(30),
+ g_name nvarchar(30) ,
+ g_founder varchar(20) ,
+foreign key(g_name,g_founder) references thegroup(name,founder),
 );
+
+select a.id,a.title,a.start_time,a.end_time                                           
+from meeting a join group_user b on a.g_name = b.g_name
+where a.g_founder = 'qaz' and a.g_name = '第一組'    
+order by start_time DESC          
+
+insert into group_user values(‘1992-06-07 23:12:4.333’,‘2002-06-07 23:12:4.333’,’second’,’第一組’,’qaz’)  
+
+select *
+from theuser a join group_user b on a.name = b.u_name   
+where b.g_name = ? and b.g_founder = ?

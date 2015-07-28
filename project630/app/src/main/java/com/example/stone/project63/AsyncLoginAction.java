@@ -61,14 +61,16 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
                 time++;
             }
             String answer = br.readLine();
-            StringRule sr = new StringRule(answer);
-            MainActivity.pass = StringRule.isSucces(sr.dString[0]);
+            socket.close();
+            String[] dString = StringRule.divide(answer);
+            MainActivity.pass = StringRule.isSucces(dString[0]);
         }
         catch (Exception ex){
             System.out.println(ex.toString());
             result = 0;
         }
         MainActivity.asyncfin = true;
+
         return result;
     }
 

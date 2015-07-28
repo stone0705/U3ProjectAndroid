@@ -3,6 +3,7 @@ package com.example.stone.project63;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ import java.net.Socket;
 public class inmeetingActivity extends Activity {
     public static Handler mHandler = new Handler();
     static LinearLayout main;
-    EditText name;
     EditText text;
     Button sent;
     ScrollView scrollView;
@@ -39,7 +39,6 @@ public class inmeetingActivity extends Activity {
     String tmp;
     String selfstring;
     StringRule Sr;
-    LinearLayout linearLayout;
     PopupWindow mPopupWindow;
     SharedPreferences settings;
     final String STORE_NAME = "Settings";
@@ -51,15 +50,18 @@ public class inmeetingActivity extends Activity {
         main = (LinearLayout)findViewById(R.id.linear);
         Button a = new Button(this);
         scrollView = (ScrollView)findViewById(R.id.addscrollView);
-        name = (EditText)findViewById(R.id.EditText01);
         text = (EditText)findViewById(R.id.EditText02);
         sent = (Button)findViewById(R.id.Button01);
-        linearLayout = (LinearLayout)findViewById(R.id.FrameLayout01);
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         final View popupWindow = layoutInflater.inflate(R.layout.popup_window, null);
-        mPopupWindow = new PopupWindow(popupWindow, 300, 330);
+        //popwindow 設定大小符合內容 點擊popwindow以外的部分會使popwindow消失
+        mPopupWindow = new PopupWindow(popupWindow, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        /*
         Thread t = new Thread(readData);
         t.start();
+        */
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +69,7 @@ public class inmeetingActivity extends Activity {
                     if(socket.isConnected()&&!text.getText().toString().equals("")){
                         BufferedWriter bw;
                         bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-                        selfstring = StringRule.standard(5,"1031",settings.getString("account",""),text.getText().toString(),"黑社會","aaa");
+                        selfstring = StringRule.standard("1032",settings.getString("account",""),text.getText().toString(),"aaa");
                         bw.write(selfstring);
                         bw.flush();
                     }
@@ -79,6 +81,21 @@ public class inmeetingActivity extends Activity {
         });
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        Thread t = new Thread(readData);
+        t.start();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,11 +121,11 @@ public class inmeetingActivity extends Activity {
         public void run() {
             LinearLayout.LayoutParams self = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             self.gravity = Gravity.RIGHT;
-            Sr= new StringRule(tmp);
-            if(Sr.dString[1].equals(settings.getString("account",""))){
-                main.addView(new nbut(inmeetingActivity.this,Sr.dString[2],mPopupWindow),self);
+            String[] dString = StringRule.divide(tmp);
+            if(dString[1].equals(settings.getString("account",""))){
+                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
             }else{
-                main.addView(new nbut(inmeetingActivity.this,Sr.dString[2],mPopupWindow));
+                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
             }
             scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
@@ -117,24 +134,22 @@ public class inmeetingActivity extends Activity {
     private Runnable readData = new Runnable() {
         public void run() {
             InetAddress serverIp;
-
             try {
                 serverIp = InetAddress.getByName("10.0.2.2");
                 int serverPort = 5050;
                 socket = new Socket(serverIp, serverPort);
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(
-                        socket.getInputStream()));
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter bw;
                 bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-                selfstring = StringRule.standard(5,"1030",settings.getString("account",""),settings.getString("android_id",""),"黑社會","aaa");
+                selfstring = StringRule.standard("1031",settings.getString("account",""),settings.getString("android_id",""),"aaa");
                 bw.write(selfstring);
                 bw.flush();
                 while (socket.isConnected()) {
-                    tmp = br.readLine();
-
-                    if(tmp!=null)
+                    if((tmp = br.readLine())!=null){
                         mHandler.post(updateText);
+                    }else{
+                        break;
+                    }
                 }
 
             } catch (IOException e) {
