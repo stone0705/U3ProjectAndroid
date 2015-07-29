@@ -54,3 +54,6 @@ http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0702/1627.html
 
 android生命週期
 http://developer.android.com/reference/android/app/Activity.html
+
+Android　Activity Transitions を実装する
+http://y-anz-m.blogspot.tw/2014/12/androidactivity-transitions.html

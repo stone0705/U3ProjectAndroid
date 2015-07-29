@@ -54,6 +54,8 @@ public class MainActivity extends Activity {
                     editor.putString("account",account.getText().toString());
                     String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                     editor.putString("android_id",androidId);
+                    editor.putString("group","第一組");
+                    editor.putString("founder","qaz");
                     editor.commit();
                     intent.setClass(MainActivity.this, masterpage.class);
                     startActivity(intent);

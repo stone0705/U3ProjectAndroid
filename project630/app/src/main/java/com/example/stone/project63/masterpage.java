@@ -1,10 +1,15 @@
 package com.example.stone.project63;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,9 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class masterpage extends Activity implements View.OnTouchListener {
+    static HashMap Listmap = new HashMap<String,String[]>();
+    static ArrayList<String> titleList = new ArrayList<String>();
+    static boolean asyncfin = false;
     Intent intent;
     Button note;
     Button vote;
@@ -29,10 +39,15 @@ public class masterpage extends Activity implements View.OnTouchListener {
     ColorFilter high = new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000);
     View set;
     int state = 5;
+    SharedPreferences settings;
+    final String STORE_NAME = "Settings";
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_masterpage);
+        settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
+        editor = settings.edit();
         LayoutInflater inflater =  getLayoutInflater();
         note = (Button)findViewById(R.id.note);
         vote = (Button)findViewById(R.id.vote);
@@ -46,6 +61,7 @@ public class masterpage extends Activity implements View.OnTouchListener {
         content.setOnTouchListener(this);
         cf = note.getBackground().getColorFilter();
         setting.getBackground().setColorFilter(high);
+        setupWindowAnimations();
         listener();
 
     }
@@ -73,54 +89,13 @@ public class masterpage extends Activity implements View.OnTouchListener {
         return super.onOptionsItemSelected(item);
     }
     void listener(){
-        ges = new GestureDetector(this,new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return false;
-            }
 
-            @Override
-            public void onShowPress(MotionEvent e) {
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if(e2.getX()-e1.getX()>70){
-                    if(state!=1){
-                        state--;
-                        change(state);
-                    }
-                }
-                if(e1.getX()-e2.getX()>70){
-                    if(state!=5){
-                        state++;
-                        change(state);
-                    }
-                }
-                return true;
-            }
-        });
         note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(state!=1){
                     state = 1;
-                    change(state);
+                    change(state,"1070");
                 }
             }
         });
@@ -129,7 +104,7 @@ public class masterpage extends Activity implements View.OnTouchListener {
             public void onClick(View v) {
                 if (state != 2) {
                     state = 2;
-                    change(state);
+                    change(state,"1071");
                 }
             }
         });
@@ -138,7 +113,7 @@ public class masterpage extends Activity implements View.OnTouchListener {
             public void onClick(View v) {
                 if (state != 3) {
                     state = 3;
-                    change(state);
+                    change(state,"1072");
                 }
             }
         });
@@ -147,7 +122,7 @@ public class masterpage extends Activity implements View.OnTouchListener {
             public void onClick(View v) {
                 if(state!=4){
                     state = 4;
-                    change(state);
+                    change(state,"1073");
                 }
             }
         });
@@ -156,12 +131,13 @@ public class masterpage extends Activity implements View.OnTouchListener {
             public void onClick(View v) {
                 if(state!=5){
                     state = 5;
-                    change(state);
+                    change(state,"");
                 }
             }
         });
     }
-    void change(int state){
+    void change(int state,String rule){
+        asyncfin = false;
         setting.getBackground().setColorFilter(cf);
         note.getBackground().setColorFilter(cf);
         vote.getBackground().setColorFilter(cf);
@@ -186,10 +162,35 @@ public class masterpage extends Activity implements View.OnTouchListener {
                 break;
             }
             case 2:{
+                ProgressDialog dialog = ProgressDialog.show(masterpage.this,"註冊中", "請等待...", true);
+                AsyncGetList sub = new AsyncGetList(dialog);
+                sub.execute(rule,settings.getString("account",""),settings.getString("android_id",""),settings.getString("group",""),settings.getString("founder",""));
+                while (!asyncfin){}
                 meeting.getBackground().setColorFilter(high);
                 content.removeAllViews();
-                intent.setClass(masterpage.this,inmeetingActivity.class);
-                startActivity(intent);
+                final Bundle bundle = new Bundle();
+                for(int i = 0;i<titleList.size();i++){
+                    String title = titleList.get(i);
+                    final String[] divide = (String[]) Listmap.get(title);
+                    final Button temp = new Button(masterpage.this);
+                    temp.setText(title);
+                    temp.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            editor.putString("meeting_id",divide[1]);
+                            editor.putString("meeting_title",divide[2]);
+                            editor.commit();
+                            intent.setClass(masterpage.this,inmeetingActivity.class);
+                            View sharedView = temp;
+                            String transitionName = "temp";
+
+                            ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(masterpage.this, sharedView, "menu");
+                            startActivity(intent, transitionActivityOptions.toBundle());
+                            //startActivity(intent);
+                        }
+                    });
+                    content.addView(temp);
+                }
                 break;
             }
             case 3:{
@@ -211,6 +212,14 @@ public class masterpage extends Activity implements View.OnTouchListener {
                 break;
             }
         }
+    }
+    private void setupWindowAnimations() {
+        Explode explode = new Explode();
+        explode.setDuration(2000);
+        getWindow().setExitTransition(explode);
+
+        Fade fade = new Fade();
+        getWindow().setReenterTransition(fade);
     }
     @Override
     public boolean onTouch(View v, MotionEvent event) {

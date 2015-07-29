@@ -7,6 +7,7 @@ public class StringRule {
     String[] dString;
     static HashMap rulemap = new HashMap<String,Integer>();
     public static String[] divide(String msg){
+        if(msg == null)return null;
         String[] findrule = msg.split(":");
         int number = rule(findrule[0]);
         String[] answer = new String[number];
@@ -48,6 +49,8 @@ public class StringRule {
     }
 
     static int rule(String findrule){
+        //傳送完成 0000
+        rulemap.put("n0000", 1);
         //註冊 1000 帳號 密碼 暱稱
         rulemap.put("n1000", 4);
         //登入  1010 帳號 密碼
@@ -78,9 +81,9 @@ public class StringRule {
         rulemap.put("n2011", 1);
         //傳送筆記列表 id title start_time end_time
         rulemap.put("n2070", 5);
-        rulemap.put("n2071", 1);
-        rulemap.put("n2072", 1);
-        rulemap.put("n2073", 1);
+        rulemap.put("n2071", 5);
+        rulemap.put("n2072", 5);
+        rulemap.put("n2073", 5);
         //不在群組中
         rulemap.put("n2079", 1);
         return (int) rulemap.get("n"+findrule);

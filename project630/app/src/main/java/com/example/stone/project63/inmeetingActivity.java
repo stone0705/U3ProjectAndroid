@@ -1,23 +1,25 @@
 package com.example.stone.project63;
 
-import android.app.ActionBar;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ActionMenuView;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,20 +30,21 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 
-
 public class inmeetingActivity extends Activity {
     public static Handler mHandler = new Handler();
     static LinearLayout main;
+    TextView teamname;
     EditText text;
     Button sent;
     ScrollView scrollView;
     Socket socket;
     String tmp;
     String selfstring;
-    StringRule Sr;
     PopupWindow mPopupWindow;
     SharedPreferences settings;
     final String STORE_NAME = "Settings";
+    private static final long ANIM_DURATION = 1000;
+    private View bgViewGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,7 @@ public class inmeetingActivity extends Activity {
         settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
         main = (LinearLayout)findViewById(R.id.linear);
         Button a = new Button(this);
+        teamname = (TextView)findViewById(R.id.teamname);
         scrollView = (ScrollView)findViewById(R.id.addscrollView);
         text = (EditText)findViewById(R.id.EditText02);
         sent = (Button)findViewById(R.id.Button01);
@@ -58,10 +62,9 @@ public class inmeetingActivity extends Activity {
         mPopupWindow = new PopupWindow(popupWindow, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        /*
-        Thread t = new Thread(readData);
-        t.start();
-        */
+        setupLayout();
+        setupWindowAnimations();
+        teamname.setText(settings.getString("group","")+"="+settings.getString("meeting_title",""));
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +72,7 @@ public class inmeetingActivity extends Activity {
                     if(socket.isConnected()&&!text.getText().toString().equals("")){
                         BufferedWriter bw;
                         bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-                        selfstring = StringRule.standard("1032",settings.getString("account",""),text.getText().toString(),"aaa");
+                        selfstring = StringRule.standard("1032",settings.getString("account",""),text.getText().toString(),settings.getString("meeting_id",""));
                         bw.write(selfstring);
                         bw.flush();
                     }
@@ -141,7 +144,7 @@ public class inmeetingActivity extends Activity {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter bw;
                 bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-                selfstring = StringRule.standard("1031",settings.getString("account",""),settings.getString("android_id",""),"aaa");
+                selfstring = StringRule.standard("1031",settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""));
                 bw.write(selfstring);
                 bw.flush();
                 while (socket.isConnected()) {
@@ -157,5 +160,89 @@ public class inmeetingActivity extends Activity {
             }
         }
     };
+    private void setupLayout() {
+        bgViewGroup = findViewById(R.id.back);
+    }
 
+    private void setupWindowAnimations() {
+        setupEnterAnimations();
+        setupExitAnimations();
+    }
+
+    private void setupEnterAnimations() {
+        Transition enterTransition = getWindow().getSharedElementEnterTransition();
+        enterTransition.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {}
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                animateRevealShow(bgViewGroup);
+                }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+
+            @Override
+            public void onTransitionPause(Transition transition) {}
+
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        });
+    }
+
+    private void setupExitAnimations() {
+        Transition sharedElementReturnTransition = getWindow().getSharedElementReturnTransition();
+        sharedElementReturnTransition.setStartDelay(ANIM_DURATION);
+
+
+        Transition returnTransition = getWindow().getReturnTransition();
+        returnTransition.setDuration(ANIM_DURATION);
+        returnTransition.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                animateRevealHide(bgViewGroup);
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {}
+
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+
+            @Override
+            public void onTransitionPause(Transition transition) {}
+
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        });
+    }
+
+    private void animateRevealShow(View viewRoot) {
+        int cx = (viewRoot.getLeft() + viewRoot.getRight()) / 2;
+        int cy = (viewRoot.getTop() + viewRoot.getBottom()) / 2;
+        int finalRadius = Math.max(viewRoot.getWidth(), viewRoot.getHeight());
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(viewRoot, cx, cy, 0, finalRadius);
+        viewRoot.setVisibility(View.VISIBLE);
+        anim.setDuration(ANIM_DURATION);
+        anim.start();
+    }
+
+    private void animateRevealHide(final View viewRoot) {
+        int cx = (viewRoot.getLeft() + viewRoot.getRight()) / 2;
+        int cy = (viewRoot.getTop() + viewRoot.getBottom()) / 2;
+        int initialRadius = viewRoot.getWidth();
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(viewRoot, cx, cy, initialRadius, 0);
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                viewRoot.setVisibility(View.INVISIBLE);
+            }
+        });
+        anim.setDuration(ANIM_DURATION);
+        anim.start();
+    }
 }
