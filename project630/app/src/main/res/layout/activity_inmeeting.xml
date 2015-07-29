@@ -8,7 +8,7 @@
     android:id="@+id/back"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@android:color/holo_blue_light"
+    android:background="#FFffb0D7"
     >
 
     <LinearLayout

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -125,6 +126,7 @@ public class inmeetingActivity extends Activity {
             LinearLayout.LayoutParams self = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             self.gravity = Gravity.RIGHT;
             String[] dString = StringRule.divide(tmp);
+            System.out.println(dString[2]);
             if(dString[1].equals(settings.getString("account",""))){
                 main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
             }else{
