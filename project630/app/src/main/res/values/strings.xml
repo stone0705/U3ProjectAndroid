@@ -15,5 +15,6 @@
     <string name="title_activity_innote">innoteActivity</string>
     <string name="title_activity_masterpage">masterpage</string>
     <string name="title_activity_submit">submit</string>
+    <string name="title_activity_create_group">createGroupActivity</string>
 
 </resources>

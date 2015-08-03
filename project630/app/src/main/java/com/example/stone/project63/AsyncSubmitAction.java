@@ -1,6 +1,9 @@
 package com.example.stone.project63;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 
@@ -17,8 +20,12 @@ import java.net.Socket;
 public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 80000;
     ProgressDialog dialog;
-    public AsyncSubmitAction(ProgressDialog dialog){
-        this.dialog = dialog;
+    boolean pass;
+    String response;
+    Context mContext;
+    public AsyncSubmitAction(Context mContext){
+        this.mContext = mContext;
+        dialog = new ProgressDialog(mContext);
     }
     @Override
     protected void onPreExecute() {
@@ -26,23 +33,10 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
         // TODO Auto-generated method stub
         super.onPreExecute();
         // 背景工作處理"前"需作的事
+        dialog.setMessage("請等待");
+        dialog.setTitle("註冊中");
+        dialog.setCancelable(false);
         dialog.show();
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                try{
-                    while(!AsyncSubmitAction.this.getStatus().equals(AsyncTask.Status.FINISHED)&&!AsyncSubmitAction.this.isCancelled())
-                        Thread.sleep(500);
-
-                }
-                catch(Exception e){
-                    e.printStackTrace();
-                }
-                finally{
-                    dialog.dismiss();
-                }
-            }
-        }).start();
     }
     @Override
     protected Integer doInBackground(String... params) {
@@ -56,6 +50,7 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             int time = 0;
             while(!br.ready()){
+                System.out.println(time);
                 if(time > LONGTIME)
                     throw new Exception("long time");
                 time++;
@@ -63,16 +58,40 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
             String answer = br.readLine();
             socket.close();
             String[] dString = StringRule.divide(answer);
-            submit.response = StringRule.responseString(dString[0]);
-            submit.pass = StringRule.isSucces(dString[0]);
+            response = StringRule.responseString(dString[0]);
+            pass = StringRule.isSucces(dString[0]);
         }
         catch (Exception ex){
             System.out.println(ex.toString());
+            response = ex.toString();
+            pass = false;
             result = 0;
         }
         System.out.println("thread"+result);
-        submit.asyncfin = true;
         return result;
+    }
+    @Override
+    protected void onPostExecute(Integer result) {
+        // TODO Auto-generated method stub
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        final Intent intent = new Intent();
+        AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Alert message to be shown");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if(pass){
+                            intent.setClass(mContext,MainActivity.class);
+                            mContext.startActivity(intent);
+                        }
+                    }
+                });
+        alertDialog.setMessage(response);
+        alertDialog.show();
     }
 
 }

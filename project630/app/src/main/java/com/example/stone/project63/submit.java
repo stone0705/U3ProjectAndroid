@@ -21,9 +21,7 @@ public class submit extends Activity {
     EditText account;
     EditText password;
     EditText nickname;
-    static boolean pass;
     static String response = "";
-    static boolean asyncfin = false;
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,40 +31,29 @@ public class submit extends Activity {
         account = (EditText)findViewById(R.id.account);
         password = (EditText)findViewById(R.id.password);
         nickname =(EditText)findViewById(R.id.nickname);
-        final AlertDialog alertDialog = new AlertDialog.Builder(submit.this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("Alert message to be shown");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if(pass){
-                            intent = new Intent();
-                            intent.setClass(submit.this,MainActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-                });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                asyncfin = false;
                 if(account.getText().toString().equals("") || password.getText().toString().equals("") || nickname.getText().toString().equals("")){
                     response = "請輸入完所有項目";
-                    pass = false;
+                    AlertDialog alertDialog = new AlertDialog.Builder(submit.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage(response);
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
                 }else{
-                    ProgressDialog dialog = ProgressDialog.show(submit.this,"註冊中", "請等待...", true);
-                    AsyncSubmitAction sub = new AsyncSubmitAction(dialog);
-                    sub.execute(account.getText().toString(),password.getText().toString(),nickname.getText().toString());
-                    System.out.println("1111");
-                    while (!asyncfin){}
-                    System.out.println("2222");
+                    AsyncSubmitAction sub = new AsyncSubmitAction(submit.this);
+                    sub.execute(account.getText().toString(), password.getText().toString(), nickname.getText().toString());
                 }
-                alertDialog.setMessage(response);
-                alertDialog.show();
             }
         });
     }
+
 
 
     @Override
@@ -87,7 +74,6 @@ public class submit extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

@@ -25,10 +25,7 @@ public class MainActivity extends Activity {
     Intent intent;
     EditText account;
     EditText password;
-    public static boolean pass;
-    public static boolean asyncfin;
     final String STORE_NAME = "Settings";
-    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,30 +33,14 @@ public class MainActivity extends Activity {
         account = (EditText)findViewById(R.id.editText);
         password = (EditText)findViewById(R.id.editText2);
         intent = new Intent();
-        SharedPreferences settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
-        editor = settings.edit();
+        final SharedPreferences settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
         login = (Button)findViewById(R.id.login);
         newuser = (Button)findViewById(R.id.newuser);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pass = false;
-                asyncfin = false;
-                ProgressDialog dialog = ProgressDialog.show(MainActivity.this,"讀取中", "請等待3秒...", true);
-                AsyncLoginAction logina = new AsyncLoginAction(dialog);
+                AsyncLoginAction logina = new AsyncLoginAction(MainActivity.this,settings);
                 logina.execute(account.getText().toString(),password.getText().toString());
-                while (!asyncfin){}
-                System.out.println("main  "+pass);
-                if(pass){
-                    editor.putString("account",account.getText().toString());
-                    String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                    editor.putString("android_id",androidId);
-                    editor.putString("group","第一組");
-                    editor.putString("founder","qaz");
-                    editor.commit();
-                    intent.setClass(MainActivity.this, masterpage.class);
-                    startActivity(intent);
-                }
             }
         });
         newuser.setOnClickListener(new View.OnClickListener() {

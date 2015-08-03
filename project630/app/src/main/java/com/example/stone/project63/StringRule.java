@@ -84,6 +84,8 @@ public class StringRule {
         rulemap.put("n2071", 5);
         rulemap.put("n2072", 5);
         rulemap.put("n2073", 5);
+        //尚未被加入群組
+        rulemap.put("n2078", 1);
         //不在群組中
         rulemap.put("n2079", 1);
         return (int) rulemap.get("n"+findrule);
@@ -103,6 +105,10 @@ public class StringRule {
     public static String responseString(String number){
         String answer = "";
         switch (number){
+            case "0000":{
+                answer = "傳送成功";
+                break;
+            }
             case "2000":{
                 answer = "註冊成功";
                 break;
@@ -119,7 +125,11 @@ public class StringRule {
                 answer = "帳號或密碼錯誤";
                 break;
             }
-            case"2079":{
+            case "2078":{
+                answer = "尚未被加入群組";
+                break;
+            }
+            case "2079":{
                 answer = "不在群組中";
                 break;
             }
@@ -129,6 +139,10 @@ public class StringRule {
     public  static boolean isSucces(String number){
         boolean answer = false;
         switch (number){
+            case "0000":{
+                answer = true;
+                break;
+            }
             case "2000":{
                 answer = true;
                 break;
@@ -142,6 +156,10 @@ public class StringRule {
                 break;
             }
             case "2011":{
+                answer = false;
+                break;
+            }
+            case "2078":{
                 answer = false;
                 break;
             }
