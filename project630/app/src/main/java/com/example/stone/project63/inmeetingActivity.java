@@ -168,8 +168,25 @@ public class inmeetingActivity extends Activity {
                 selfstring = StringRule.standard("1031",settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""));
                 bw.write(selfstring);
                 bw.flush();
+                while(socket.isConnected()){
+                    if((tmp = br.readLine())!=null){
+                        LinearLayout.LayoutParams self = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        self.gravity = Gravity.RIGHT;
+                        String[] dString = StringRule.divide(tmp);
+                        if(dString[0].equals("0000")){
+                            break;
+                        }else{
+                            if(dString[1].equals(settings.getString("account",""))){
+                                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
+                            }else{
+                                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
+                            }
+                        }
+                    }
+                }
                 while (socket.isConnected()) {
                     if((tmp = br.readLine())!=null){
+                        System.out.println(tmp);
                         mHandler.post(updateText);
                     }else{
                         break;
