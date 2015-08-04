@@ -60,3 +60,6 @@ http://y-anz-m.blogspot.tw/2014/12/androidactivity-transitions.html
 
 color
 https://www.google.com/design/spec/style/color.html#color-color-palette
+
+ReadWriteLock
+http://tutorials.jenkov.com/java-concurrency/read-write-locks.html

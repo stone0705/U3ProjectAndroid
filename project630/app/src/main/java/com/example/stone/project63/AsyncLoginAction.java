@@ -82,6 +82,7 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
         }
         catch (Exception ex){
             System.out.println(ex.toString());
+            response = ex.toString();
             result = 0;
         }
         account = params[0];

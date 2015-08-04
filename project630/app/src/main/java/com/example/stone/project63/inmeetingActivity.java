@@ -32,11 +32,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class inmeetingActivity extends Activity {
     public static Handler mHandler = new Handler();
     static LinearLayout main;
+    ArrayList<String> logMsg = new ArrayList<String>();
+    ArrayList<String> logAccount = new ArrayList<String>();
+    boolean finishLog = false;
+    boolean printLog = false;
     TextView teamname;
     EditText text;
     Button sent;
@@ -126,31 +131,46 @@ public class inmeetingActivity extends Activity {
 
     private Runnable updateText = new Runnable() {
         public void run() {
+
             LinearLayout.LayoutParams self = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             self.gravity = Gravity.RIGHT;
-            String[] dString = StringRule.divide(tmp);
-            System.out.println(dString[2]);
-            if(dString[0].equals("2077")){
-                final Intent intent = new Intent();
-                AlertDialog alertDialog = new AlertDialog.Builder(inmeetingActivity.this).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setMessage(StringRule.responseString("2077"));
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+            if(!printLog){
+                if(!logMsg.isEmpty()){
+                    for(int i = 0;i<logMsg.size();i++){
+                        if(logAccount.get(i).equals(settings.getString("account",""))){
+                            main.addView(new nbut(inmeetingActivity.this,logMsg.get(i),mPopupWindow),self);
+                        }else{
+                            main.addView(new nbut(inmeetingActivity.this,logMsg.get(i),mPopupWindow));
+                        }
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                }
+                printLog = true;
+            }else{
+                String[] dString = StringRule.divide(tmp);
+                System.out.println(dString[2]);
+                if(dString[0].equals("2077")){
+                    final Intent intent = new Intent();
+                    AlertDialog alertDialog = new AlertDialog.Builder(inmeetingActivity.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage(StringRule.responseString("2077"));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
                                     intent.setClass(inmeetingActivity.this,MainActivity.class);
                                     inmeetingActivity.this.startActivity(intent);
-                            }
-                        });
-                alertDialog.show();
-            }else{
-                if(dString[1].equals(settings.getString("account",""))){
-                    main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
+                                }
+                            });
+                    alertDialog.show();
                 }else{
-                    main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
+                    if(dString[1].equals(settings.getString("account",""))){
+                        main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
+                    }else{
+                        main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
+                    }
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                 }
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         }
     };
@@ -158,6 +178,8 @@ public class inmeetingActivity extends Activity {
     private Runnable readData = new Runnable() {
         public void run() {
             InetAddress serverIp;
+            finishLog = false;
+            printLog = false;
             try {
                 serverIp = InetAddress.getByName("10.0.2.2");
                 int serverPort = 5050;
@@ -168,26 +190,23 @@ public class inmeetingActivity extends Activity {
                 selfstring = StringRule.standard("1031",settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""));
                 bw.write(selfstring);
                 bw.flush();
-                while(socket.isConnected()){
+                while (socket.isConnected()) {
+                    if(finishLog && !printLog){
+                        mHandler.post(updateText);
+                    }
                     if((tmp = br.readLine())!=null){
-                        LinearLayout.LayoutParams self = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        self.gravity = Gravity.RIGHT;
-                        String[] dString = StringRule.divide(tmp);
-                        if(dString[0].equals("0000")){
-                            break;
+                        if(finishLog){
+                            System.out.println(tmp);
+                            mHandler.post(updateText);
                         }else{
-                            if(dString[1].equals(settings.getString("account",""))){
-                                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
+                            String[] dString = StringRule.divide(tmp);
+                            if(dString[0].equals("0000")){
+                                finishLog = true;
                             }else{
-                                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
+                                logAccount.add(dString[1]);
+                                logMsg.add(dString[2]);
                             }
                         }
-                    }
-                }
-                while (socket.isConnected()) {
-                    if((tmp = br.readLine())!=null){
-                        System.out.println(tmp);
-                        mHandler.post(updateText);
                     }else{
                         break;
                     }
