@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class masterpage extends Activity implements View.OnTouchListener {
+public class masterpage extends Activity {
     Intent intent;
     Button note;
     Button vote;
@@ -54,7 +54,6 @@ public class masterpage extends Activity implements View.OnTouchListener {
         setting = (Button)findViewById(R.id.personal);
         content = (LinearLayout)findViewById(R.id.contentlayout);
         content.setLongClickable(true);
-        content.setOnTouchListener(this);
         cf = note.getBackground().getColorFilter();
         setting.getBackground().setColorFilter(high);
         setupWindowAnimations();
@@ -212,9 +211,4 @@ public class masterpage extends Activity implements View.OnTouchListener {
         Fade fade = new Fade();
         getWindow().setReenterTransition(fade);
     }
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return this.ges.onTouchEvent(event);
-    }
-
 }
