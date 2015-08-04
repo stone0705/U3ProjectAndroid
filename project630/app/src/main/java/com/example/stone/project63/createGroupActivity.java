@@ -1,17 +1,53 @@
 package com.example.stone.project63;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class createGroupActivity extends Activity {
-
+    Button create;
+    EditText group;
+    static String response = "";
+    SharedPreferences settings;
+    final String STORE_NAME = "Settings";
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+        create = (Button)findViewById(R.id.creategroup);
+        group = (EditText)findViewById(R.id.groupname);
+        settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (group.getText().toString().equals("")) {
+                    response = "請輸入完所有項目";
+                    AlertDialog alertDialog = new AlertDialog.Builder(createGroupActivity.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage(response);
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                } else {
+                    AsyncCreateGroup sub = new AsyncCreateGroup(createGroupActivity.this);
+                    sub.execute(settings.getString("account",""),settings.getString("android_id",""),group.getText().toString());
+                }
+            }
+        });
     }
 
     @Override

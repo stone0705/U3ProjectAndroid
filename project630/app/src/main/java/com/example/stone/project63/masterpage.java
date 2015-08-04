@@ -36,7 +36,6 @@ public class masterpage extends Activity implements View.OnTouchListener {
     GestureDetector ges;
     ColorFilter cf;
     ColorFilter high = new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000);
-    View set;
     int state = 5;
     SharedPreferences settings;
     final String STORE_NAME = "Settings";
@@ -53,8 +52,6 @@ public class masterpage extends Activity implements View.OnTouchListener {
         meeting = (Button)findViewById(R.id.chat);
         schdule = (Button)findViewById(R.id.sched);
         setting = (Button)findViewById(R.id.personal);
-        set = inflater.inflate(R.layout.set,null);
-        intent = new Intent();
         content = (LinearLayout)findViewById(R.id.contentlayout);
         content.setLongClickable(true);
         content.setOnTouchListener(this);
@@ -62,9 +59,8 @@ public class masterpage extends Activity implements View.OnTouchListener {
         setting.getBackground().setColorFilter(high);
         setupWindowAnimations();
         listener();
-
+        change(5, "");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,6 +136,7 @@ public class masterpage extends Activity implements View.OnTouchListener {
         vote.getBackground().setColorFilter(cf);
         schdule.getBackground().setColorFilter(cf);
         meeting.getBackground().setColorFilter(cf);
+        intent = new Intent();
         switch(state){
             case 1:{
                 note.getBackground().setColorFilter(high);
@@ -179,7 +176,30 @@ public class masterpage extends Activity implements View.OnTouchListener {
             case 5:{
                 setting.getBackground().setColorFilter(high);
                 content.removeAllViews();
-                content.addView(set);
+                Button setbutton = new Button(masterpage.this);
+                setbutton.setText("設定");
+                Button personalSchButton = new Button(masterpage.this);
+                personalSchButton.setText("個人行事曆");
+                Button choiceGroup = new Button(masterpage.this);
+                choiceGroup.setText("選擇群組");
+                Button findGroup = new Button(masterpage.this);
+                findGroup.setText("尋找群組");
+                Button createGroup = new Button(masterpage.this);
+                createGroup.setText("創建群組");
+                createGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        intent = new Intent();
+                        intent.setClass(masterpage.this,createGroupActivity.class);
+                        masterpage.this.startActivity(intent);
+                    }
+                });
+                content.addView(setbutton);
+                content.addView(personalSchButton);
+                content.addView(choiceGroup);
+                content.addView(findGroup);
+                content.addView(createGroup);
+
                 break;
             }
         }

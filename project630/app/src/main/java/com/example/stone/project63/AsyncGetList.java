@@ -24,15 +24,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by stone on 2015/7/8.
- */
 public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
-    final int LONGTIME = 80000;
+    final int LONGTIME = 8;
+    static int time;
     HashMap Listmap = new HashMap<String,String[]>();
     ArrayList<String> titleList = new ArrayList<String>();
     ProgressDialog dialog;
     boolean pass;
+    boolean backtologin = false;
     Activity mActivity;
     String response;
     Context mContext;
@@ -65,21 +64,37 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
             bw.write(StringRule.standard(params[0],params[1],params[2],params[3],params[4]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            int time = 0;
             String[] divide;
+            time = 0;
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try{
+                        while(time <= LONGTIME){
+                            Thread.sleep(1000);
+                            time++;
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
             while(!br.ready()){
                 if(time > LONGTIME)
                     throw new Exception("long time");
-                time++;
             }
             String answer = "";
             while(socket.isConnected()){
                 if((answer = br.readLine())==null){break;}
                 System.out.println(answer);
                 divide = StringRule.divide(answer);
-                if(divide[0].equals("0000")||divide[0].equals("2078")||divide[0].equals("2079")){
+                if(divide[0].equals("0000")||divide[0].equals("2077")||divide[0].equals("2078")||divide[0].equals("2079")){
                     pass = StringRule.isSucces(divide[0]);
                     response = StringRule.responseString(divide[0]);
+                    if(divide[0].equals("2077")){
+                        backtologin = true;
+                    }
                     break;}
                 titleList.add(divide[2]);
                 Listmap.put(divide[2],divide);
@@ -111,7 +126,7 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if(pass){
+                        if(backtologin){
                             intent.setClass(mContext,MainActivity.class);
                             mContext.startActivity(intent);
                         }
@@ -138,7 +153,6 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
                     View sharedView = temp;
                     ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, sharedView, "menu");
                     mContext.startActivity(intent, transitionActivityOptions.toBundle());
-                    //startActivity(intent);
                 }
             });
             masterpage.content.addView(temp);

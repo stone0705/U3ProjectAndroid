@@ -36,11 +36,12 @@ public class MainActivity extends Activity {
         final SharedPreferences settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
         login = (Button)findViewById(R.id.login);
         newuser = (Button)findViewById(R.id.newuser);
+        final String androidId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AsyncLoginAction logina = new AsyncLoginAction(MainActivity.this,settings);
-                logina.execute(account.getText().toString(),password.getText().toString());
+                logina.execute(account.getText().toString(),password.getText().toString(),androidId);
             }
         });
         newuser.setOnClickListener(new View.OnClickListener() {

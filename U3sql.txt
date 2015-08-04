@@ -1,4 +1,4 @@
-﻿122.116.189.126
+122.116.189.126
 49172
 		try{
 			String connectionUrl = "jdbc:sqlserver://122.116.189.126:49172;"+"databaseName=U3project;user=U3sa;password=lucky123;";
@@ -14,6 +14,11 @@ password varchar(64) not null,
 salt varchar(60) not null,
 nick_name nvarchar(20),
 primary key(name)
+);
+create table saveuser(
+u_name varchar(20) foreign key references theuser(name),
+android_id varchar(16),
+primary key(u_name)
 );
 create table thegroup(
  name nvarchar(30) not null,

@@ -3,6 +3,9 @@ package com.example.stone.project63;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -73,7 +76,7 @@ public class inmeetingActivity extends Activity {
                     if(socket.isConnected()&&!text.getText().toString().equals("")){
                         BufferedWriter bw;
                         bw = new BufferedWriter( new OutputStreamWriter(socket.getOutputStream()));
-                        selfstring = StringRule.standard("1032",settings.getString("account",""),text.getText().toString(),settings.getString("meeting_id",""));
+                        selfstring = StringRule.standard("1032",settings.getString("account",""),text.getText().toString(),settings.getString("meeting_id",""),settings.getString("android_id",""));
                         bw.write(selfstring);
                         bw.flush();
                     }
@@ -127,12 +130,28 @@ public class inmeetingActivity extends Activity {
             self.gravity = Gravity.RIGHT;
             String[] dString = StringRule.divide(tmp);
             System.out.println(dString[2]);
-            if(dString[1].equals(settings.getString("account",""))){
-                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
+            if(dString[0].equals("2077")){
+                final Intent intent = new Intent();
+                AlertDialog alertDialog = new AlertDialog.Builder(inmeetingActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage(StringRule.responseString("2077"));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                    intent.setClass(inmeetingActivity.this,MainActivity.class);
+                                    inmeetingActivity.this.startActivity(intent);
+                            }
+                        });
+                alertDialog.show();
             }else{
-                main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
+                if(dString[1].equals(settings.getString("account",""))){
+                    main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow),self);
+                }else{
+                    main.addView(new nbut(inmeetingActivity.this,dString[2],mPopupWindow));
+                }
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
-            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     };
 

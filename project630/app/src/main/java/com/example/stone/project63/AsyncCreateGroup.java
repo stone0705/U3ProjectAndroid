@@ -17,14 +17,15 @@ import java.net.Socket;
 /**
  * Created by stone on 2015/7/8.
  */
-public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
+public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
     ProgressDialog dialog;
     boolean pass;
     String response;
     Context mContext;
-    public AsyncSubmitAction(Context mContext){
+    boolean backtologin = false;
+    public AsyncCreateGroup(Context mContext){
         this.mContext = mContext;
         dialog = new ProgressDialog(mContext);
     }
@@ -35,7 +36,7 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
         super.onPreExecute();
         // 背景工作處理"前"需作的事
         dialog.setMessage("請等待");
-        dialog.setTitle("註冊中");
+        dialog.setTitle("創建中");
         dialog.setCancelable(false);
         dialog.show();
     }
@@ -46,7 +47,7 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(1000+":"+params[0]+":"+params[1]+":"+params[2]+":\n");
+            bw.write(1100+":"+params[0]+":"+params[1]+":"+params[2]+":\n");
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             time = 0;
@@ -73,6 +74,9 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
             String[] dString = StringRule.divide(answer);
             response = StringRule.responseString(dString[0]);
             pass = StringRule.isSucces(dString[0]);
+            if(dString[0].equals("2077")){
+                backtologin = true;
+            }
         }
         catch (Exception ex){
             System.out.println(ex.toString());
@@ -80,7 +84,6 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
             pass = false;
             result = 0;
         }
-        System.out.println("thread"+result);
         return result;
     }
     @Override
@@ -97,8 +100,12 @@ public class AsyncSubmitAction extends AsyncTask<String,Integer,Integer> {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if(pass){
+                        if(backtologin){
                             intent.setClass(mContext,MainActivity.class);
+                            mContext.startActivity(intent);
+                        }
+                        if(pass){
+                            intent.setClass(mContext,masterpage.class);
                             mContext.startActivity(intent);
                         }
                     }

@@ -53,14 +53,14 @@ public class StringRule {
         rulemap.put("n0000", 1);
         //註冊 1000 帳號 密碼 暱稱
         rulemap.put("n1000", 4);
-        //登入  1010 帳號 密碼
-        rulemap.put("n1010", 3);
+        //登入  1010 帳號 密碼 android_id
+        rulemap.put("n1010", 4);
         //創建 meeting 1030 帳號 android_id 群組 title start_time end_time
         rulemap.put("n1030", 7);
         //進入 meeting 1031 帳號 android_id 群組 meeting_id
         rulemap.put("n1031", 4);
-        //客戶端傳送訊息 1032 帳號 text 群組 meeting_id
-        rulemap.put("n1032", 4);
+        //客戶端傳送訊息 1032 帳號 text 群組 meeting_id android_id
+        rulemap.put("n1032", 5);
         //獲得筆記列表 1070 帳號 android_id 群組 founder
         rulemap.put("n1070", 5);
         //獲得會議列表 1071 帳號 android_id 群組 founder
@@ -69,6 +69,8 @@ public class StringRule {
         rulemap.put("n1072", 5);
         //獲得行事曆列表 1073 帳號 android_id 群組 founder
         rulemap.put("n1073", 5);
+        //創建群組 1100 帳號 android_id 群組
+        rulemap.put("n1100", 4);
         //伺服器端傳送訊息 2030 帳號 text
         rulemap.put("n2030", 3);
         //註冊成功 2000
@@ -84,10 +86,16 @@ public class StringRule {
         rulemap.put("n2071", 5);
         rulemap.put("n2072", 5);
         rulemap.put("n2073", 5);
+        //帳號在其他裝置上登入
+        rulemap.put("n2077", 1);
         //尚未被加入群組
         rulemap.put("n2078", 1);
         //不在群組中
         rulemap.put("n2079", 1);
+        //創建群組成功
+        rulemap.put("n2100", 1);
+        //群組名稱重複
+        rulemap.put("n2101", 1);
         return (int) rulemap.get("n"+findrule);
     }
     public static String standard(String... word){
@@ -125,12 +133,24 @@ public class StringRule {
                 answer = "帳號或密碼錯誤";
                 break;
             }
+            case "2077":{
+                answer = "帳號已在其他裝置登入";
+                break;
+            }
             case "2078":{
                 answer = "尚未被加入群組";
                 break;
             }
             case "2079":{
                 answer = "不在群組中";
+                break;
+            }
+            case "2100":{
+                answer = "創建成功";
+                break;
+            }
+            case "2101":{
+                answer = "群組名稱重複";
                 break;
             }
         }
@@ -159,11 +179,23 @@ public class StringRule {
                 answer = false;
                 break;
             }
+            case "2077":{
+                answer = false;
+                break;
+            }
             case "2078":{
                 answer = false;
                 break;
             }
             case "2079":{
+                answer = false;
+                break;
+            }
+            case "2100":{
+                answer = true;
+                break;
+            }
+            case "2101":{
                 answer = false;
                 break;
             }

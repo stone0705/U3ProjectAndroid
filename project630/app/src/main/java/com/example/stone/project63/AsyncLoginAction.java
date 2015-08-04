@@ -20,7 +20,8 @@ import java.net.Socket;
  * Created by stone on 2015/7/8.
  */
 public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
-    final int LONGTIME = 80000;
+    final int LONGTIME = 8;
+    static int time;
     ProgressDialog dialog;
     boolean pass;
     String response;
@@ -51,14 +52,27 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(1010+":"+params[0]+":"+params[1]+":\n");
+            bw.write(StringRule.standard("1010",params[0],params[1],params[2]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            int time = 0;
+            time = 0;
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try{
+                        while(time <= LONGTIME){
+                            Thread.sleep(1000);
+                            time++;
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
             while(!br.ready()){
                 if(time > LONGTIME)
                     throw new Exception("long time");
-                time++;
             }
             String answer = br.readLine();
             socket.close();
@@ -93,7 +107,6 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
             mContext.startActivity(intent);
         }
         else{
-
             AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
             alertDialog.setTitle("Alert");
             alertDialog.setMessage("Alert message to be shown");
