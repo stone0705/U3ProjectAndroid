@@ -1,10 +1,5 @@
 package com.example.stone.project63;
 
-/**
- * Created by stone on 2015/7/29.
- */
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,26 +15,20 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
+/**
+ * Created by stone on 2015/8/5.
+ */
+public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
-    HashMap Listmap = new HashMap<String,String[]>();
-    ArrayList<String> titleList = new ArrayList<String>();
-    ProgressDialog dialog;
+    ArrayList<meetingMsg> tempMsg = new ArrayList<meetingMsg>();
     boolean pass;
     boolean backtologin = false;
-    Activity mActivity;
     String response;
     Context mContext;
-    SharedPreferences settings;
-    SharedPreferences.Editor editor;
-    public AsyncGetList(Context mContext,SharedPreferences settings,Activity mActivity){
-        this.mActivity = mActivity;
+    public AsyncMeetingAction(Context mContext){
         this.mContext = mContext;
-        this.settings = settings;
-        dialog = new ProgressDialog(mContext);
     }
     @Override
     protected void onPreExecute() {
@@ -49,19 +36,17 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
         // TODO Auto-generated method stub
         super.onPreExecute();
         // 背景工作處理"前"需作的事
-        dialog.setMessage("請等待");
-        dialog.setTitle("讀取中");
-        dialog.setCancelable(false);
-        dialog.show();
     }
     @Override
     protected Integer doInBackground(String... params) {
         //doInBackground是在Background Thread進行
         int result = 0;
         try{
+            System.out.println("start async");
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
+            newInMeetingActivity.socket = socket;
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard(params[0],params[1],params[2],params[3],params[4]));
+            bw.write(StringRule.standard(params[0],params[1],params[2],params[3]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String[] divide;
@@ -96,8 +81,30 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
                         backtologin = true;
                     }
                     break;}
-                titleList.add(divide[2]);
-                Listmap.put(divide[2],divide);
+                if(divide.equals("2031")){
+                    if(params[1].equals(divide[1])){
+                        newInMeetingActivity.msglist.add(new meetingMsg(true,divide[2],divide[1]));
+                    }else{
+                        newInMeetingActivity.msglist.add(new meetingMsg(false,divide[2],divide[1]));
+                    }
+                }else{
+                    if(params[1].equals(divide[1])){
+                        tempMsg.add(new meetingMsg(true,divide[2],divide[1]));
+                    }else{
+                        tempMsg.add(new meetingMsg(false,divide[2],divide[1]));
+                    }
+                }
+            }
+            for (int i = 0 ;i<tempMsg.size();i++){
+                newInMeetingActivity.msglist.add(tempMsg.get(i));
+            }
+            while((answer = br.readLine())==null){
+                divide = StringRule.divide(answer);
+                if(params[1].equals(divide[1])){
+                    newInMeetingActivity.msglist.add(new meetingMsg(true,divide[2],divide[1]));
+                }else{
+                    newInMeetingActivity.msglist.add(new meetingMsg(false,divide[2],divide[1]));
+                }
             }
             System.out.println(answer);
             //System.out.println(masterpage.titleList.get(0));
@@ -113,51 +120,30 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
         return result;
     }
     protected void onPostExecute(Integer result) {
-        // TODO Auto-generated method stub
-        if (dialog.isShowing()) {
-            dialog.dismiss();
-        }
-        final Intent intent = new Intent();
-        editor = settings.edit();
-        AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("Alert message to be shown");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if(backtologin){
-                            intent.setClass(mContext,MainActivity.class);
-                            mContext.startActivity(intent);
+        if(!newInMeetingActivity.selfdisconnect){
+            // TODO Auto-generated method stub
+            final Intent intent = new Intent();
+            AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("Alert message to be shown");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            if(backtologin){
+                                intent.setClass(mContext,MainActivity.class);
+                                mContext.startActivity(intent);
+                            }
                         }
-                    }
-                });
-        alertDialog.setMessage(response);
-        masterpage.content.removeAllViews();
-        if(!pass){
+                    });
             alertDialog.setMessage(response);
-            alertDialog.show();
+            masterpage.content.removeAllViews();
+            if(!pass){
+                alertDialog.setMessage(response);
+                alertDialog.show();
+            }
         }
-        for(int i = 0;i<titleList.size();i++){
-            String title = titleList.get(i);
-            final String[] divide = (String[]) Listmap.get(title);
-            final Button temp = new Button(mContext);
-            temp.setText(title);
-            temp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editor.putString("meeting_id",divide[1]);
-                    editor.putString("meeting_title",divide[2]);
-                    editor.commit();
-                    intent.setClass(mContext,newInMeetingActivity.class);
-                    View sharedView = temp;
-                    //ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, sharedView, "newmeetingmenu");
-                    //mContext.startActivity(intent, transitionActivityOptions.toBundle());
-                    mContext.startActivity(intent);
-                }
-            });
-            masterpage.content.addView(temp);
-        }
+
     }
 
 }

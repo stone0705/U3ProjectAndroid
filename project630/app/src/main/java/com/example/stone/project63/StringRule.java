@@ -73,6 +73,8 @@ public class StringRule {
         rulemap.put("n1100", 4);
         //伺服器端傳送訊息 2030 帳號 text
         rulemap.put("n2030", 3);
+        //伺服器端傳送歷史訊息 2031 帳號 text
+        rulemap.put("n2031", 3);
         //註冊成功 2000
         rulemap.put("n2000", 1);
         //註冊失敗 有相同的帳號 2001

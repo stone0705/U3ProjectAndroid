@@ -12,19 +12,28 @@ import android.widget.TextView;
  * Created by stone on 2015/8/5.
  */
 public class MyViewHolder extends RecyclerView.ViewHolder {
-    Button b;
+    Button left;
+    Button right;
     public MyViewHolder(View itemView,View popupWindow) {
         super(itemView);
-        b = (Button)itemView.findViewById(R.id.testbutton);
+        left = (Button)itemView.findViewById(R.id.leftbutton);
+        right = (Button)itemView.findViewById(R.id.rightbutton);
         final PopupWindow mPopupWindow;
         mPopupWindow = new PopupWindow(popupWindow, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        b.setOnClickListener(new View.OnClickListener() {
+        right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPopupWindow.dismiss();
-                mPopupWindow.showAsDropDown(b);
+                mPopupWindow.showAsDropDown(right);
+            }
+        });
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindow.dismiss();
+                mPopupWindow.showAsDropDown(left);
             }
         });
     }

@@ -63,3 +63,9 @@ https://www.google.com/design/spec/style/color.html#color-color-palette
 
 ReadWriteLock
 http://tutorials.jenkov.com/java-concurrency/read-write-locks.html
+
+RecyclerView
+https://developer.android.com/training/material/lists-cards.html
+http://www.grokkingandroid.com/first-glance-androids-recyclerview/
+http://www.codedata.com.tw/mobile/android-tutorial-the-6th-class-2-material-design-recylerview/
+http://blog.csdn.net/guxiao1201/article/details/40399777
