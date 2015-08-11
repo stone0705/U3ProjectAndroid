@@ -24,10 +24,6 @@
             android:label="@string/title_activity_invote" >
         </activity>
         <activity
-            android:name=".inmeetingActivity"
-            android:label="@string/title_activity_inmeeting" >
-        </activity>
-        <activity
             android:name=".inteamschduleActivity"
             android:label="@string/title_activity_inteamschdule" >
         </activity>

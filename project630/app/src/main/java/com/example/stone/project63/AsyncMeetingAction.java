@@ -1,11 +1,9 @@
 package com.example.stone.project63;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -38,7 +36,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
         // 背景工作處理"前"需作的事
     }
     @Override
-    protected Integer doInBackground(String... params) {
+    protected Integer doInBackground(final String... params) {
         //doInBackground是在Background Thread進行
         int result = 0;
         try{
@@ -48,7 +46,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bw.write(StringRule.standard(params[0],params[1],params[2],params[3]));
             bw.flush();
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            final BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String[] divide;
             time = 0;
             new Thread(new Runnable(){
@@ -81,11 +79,11 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                         backtologin = true;
                     }
                     break;}
-                if(divide.equals("2031")){
+                if(divide[0].equals("2031")){
                     if(params[1].equals(divide[1])){
-                        newInMeetingActivity.msglist.add(new meetingMsg(true,divide[2],divide[1]));
+                        newInMeetingActivity.mHandler.post(new update(new meetingMsg(true,divide[2],divide[1])));
                     }else{
-                        newInMeetingActivity.msglist.add(new meetingMsg(false,divide[2],divide[1]));
+                        newInMeetingActivity.mHandler.post(new update(new meetingMsg(false,divide[2],divide[1])));
                     }
                 }else{
                     if(params[1].equals(divide[1])){
@@ -96,19 +94,27 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                 }
             }
             for (int i = 0 ;i<tempMsg.size();i++){
-                newInMeetingActivity.msglist.add(tempMsg.get(i));
+                newInMeetingActivity.mHandler.post(new update(tempMsg.get(i)));
             }
-            while((answer = br.readLine())==null){
-                divide = StringRule.divide(answer);
-                if(params[1].equals(divide[1])){
-                    newInMeetingActivity.msglist.add(new meetingMsg(true,divide[2],divide[1]));
-                }else{
-                    newInMeetingActivity.msglist.add(new meetingMsg(false,divide[2],divide[1]));
+            new Thread(new Runnable(){
+                @Override
+                public void run(){
+                    String answer;
+                    try{
+                        while((answer = br.readLine())!=null){
+                            String[] divide = StringRule.divide(answer);
+                            if(params[1].equals(divide[1])){
+                                newInMeetingActivity.mHandler.post(new update(new meetingMsg(true,divide[2],divide[1])));
+                            }else{
+                                newInMeetingActivity.mHandler.post(new update(new meetingMsg(false,divide[2],divide[1])));
+                            }
+                        }
+                    }catch (Exception ex){
+                        System.out.println("receive Thread"+ex.toString());
+                    }
                 }
-            }
-            System.out.println(answer);
-            //System.out.println(masterpage.titleList.get(0));
-            socket.close();
+            }).start();
+            //socket.close();
         }
         catch (Exception ex){
             System.out.println(ex.toString());
@@ -116,9 +122,9 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
             response = ex.toString();
             result = 0;
         }
-        System.out.println("thread" + result);
         return result;
     }
+
     protected void onPostExecute(Integer result) {
         if(!newInMeetingActivity.selfdisconnect){
             // TODO Auto-generated method stub
@@ -137,7 +143,6 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                         }
                     });
             alertDialog.setMessage(response);
-            masterpage.content.removeAllViews();
             if(!pass){
                 alertDialog.setMessage(response);
                 alertDialog.show();
@@ -146,4 +151,16 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
 
     }
 
+}
+class update implements Runnable{
+
+    meetingMsg a;
+    public update(meetingMsg a){
+        this.a = a;
+    }
+    @Override
+    public void run() {
+        newInMeetingActivity.mAdapter.additem(a);
+        newInMeetingActivity.mRecyclerView.scrollToPosition(newInMeetingActivity.mAdapter.getItemCount()-1);
+    }
 }

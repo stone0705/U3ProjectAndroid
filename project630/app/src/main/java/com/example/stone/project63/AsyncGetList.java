@@ -100,7 +100,6 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
                 Listmap.put(divide[2],divide);
             }
             System.out.println(answer);
-            //System.out.println(masterpage.titleList.get(0));
             socket.close();
         }
         catch (Exception ex){
@@ -109,7 +108,6 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
             response = ex.toString();
             result = 0;
         }
-        System.out.println("thread" + result);
         return result;
     }
     protected void onPostExecute(Integer result) {
@@ -151,9 +149,9 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
                     editor.commit();
                     intent.setClass(mContext,newInMeetingActivity.class);
                     View sharedView = temp;
-                    //ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, sharedView, "newmeetingmenu");
-                    //mContext.startActivity(intent, transitionActivityOptions.toBundle());
-                    mContext.startActivity(intent);
+                    ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, sharedView, "newmeetingmenu");
+                    mContext.startActivity(intent, transitionActivityOptions.toBundle());
+                    //mContext.startActivity(intent);
                 }
             });
             masterpage.content.addView(temp);

@@ -1,10 +1,6 @@
 package com.example.stone.project63;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ColorFilter;
@@ -12,17 +8,12 @@ import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.transition.Explode;
 import android.transition.Fade;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class masterpage extends Activity {
@@ -33,7 +24,6 @@ public class masterpage extends Activity {
     Button schdule;
     Button setting;
     static LinearLayout content;
-    GestureDetector ges;
     ColorFilter cf;
     ColorFilter high = new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000);
     int state = 5;
@@ -198,7 +188,6 @@ public class masterpage extends Activity {
                 content.addView(choiceGroup);
                 content.addView(findGroup);
                 content.addView(createGroup);
-
                 break;
             }
         }

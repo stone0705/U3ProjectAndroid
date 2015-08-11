@@ -101,8 +101,8 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
             editor.putString("account",account);
             String androidId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
             editor.putString("android_id",androidId);
-            editor.putString("group","第一組");
-            editor.putString("founder","qaz");
+            editor.putString("group","qqq");
+            editor.putString("founder","www");
             editor.commit();
             intent.setClass(mContext, masterpage.class);
             mContext.startActivity(intent);

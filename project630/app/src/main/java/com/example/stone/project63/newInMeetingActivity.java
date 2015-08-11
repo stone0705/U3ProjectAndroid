@@ -4,8 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
@@ -13,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -21,11 +24,14 @@ import java.util.ArrayList;
 
 
 public class newInMeetingActivity extends Activity {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    public static RecyclerView mRecyclerView;
+    public static Handler mHandler = new Handler();
+    public static RVAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public static ArrayList<meetingMsg> msglist = new ArrayList<meetingMsg>();
     SharedPreferences settings;
+    private Button sent;
+    public static EditText msg;
     final String STORE_NAME = "Settings";
     public static Socket socket;
     static boolean selfdisconnect;
@@ -39,21 +45,31 @@ public class newInMeetingActivity extends Activity {
         teamname = (TextView)findViewById(R.id.teamname);
         mRecyclerView = (RecyclerView) findViewById(R.id.meeting_recycler_view);
         settings = getSharedPreferences(STORE_NAME, MODE_PRIVATE);
+        sent = (Button)findViewById(R.id.sent);
+        msg = (EditText)findViewById(R.id.msg);
         mLayoutManager = new LinearLayoutManager(this);
+        setupLayout();
+        setupWindowAnimations();
+        teamname.setText(settings.getString("group", "") + "=" + settings.getString("meeting_title", ""));
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RVAdapter(msglist);
         mRecyclerView.setAdapter(mAdapter);
-        setupLayout();
-        setupWindowAnimations();
-        teamname.setText(settings.getString("group","")+"="+settings.getString("meeting_title",""));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        sent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AsyncSentAction sentAction = new AsyncSentAction();
+                sentAction.execute("1032",settings.getString("account",""),msg.getText().toString(),settings.getString("meeting_id", ""),settings.getString("android_id",""));
+            }
+        });
     }
     @Override
     public void onPause(){
         super.onPause();
         try {
-            //msglist = new ArrayList<meetingMsg>();
+            msglist = new ArrayList<meetingMsg>();
             selfdisconnect = true;
-                    socket.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,6 +79,7 @@ public class newInMeetingActivity extends Activity {
     public void onResume(){
         super.onResume();
         selfdisconnect = false;
+        mAdapter = new RVAdapter(msglist);
         AsyncMeetingAction action = new AsyncMeetingAction(newInMeetingActivity.this);
         action.execute("1031",settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""));
     }
