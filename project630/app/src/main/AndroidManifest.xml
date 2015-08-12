@@ -32,10 +32,6 @@
             android:label="@string/title_activity_innote" >
         </activity>
         <activity
-            android:name=".masterpage"
-            android:label="@string/title_activity_masterpage" >
-        </activity>
-        <activity
             android:name=".submit"
             android:label="@string/title_activity_submit" >
         </activity>
@@ -46,6 +42,10 @@
         <activity
             android:name=".newInMeetingActivity"
             android:label="@string/title_activity_new_in_meeting" >
+        </activity>
+        <activity
+            android:name=".newMasterPage"
+            android:label="@string/title_activity_new_master_page" >
         </activity>
     </application>
 

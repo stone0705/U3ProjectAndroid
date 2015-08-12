@@ -35,6 +35,7 @@ public class newInMeetingActivity extends Activity {
     final String STORE_NAME = "Settings";
     public static Socket socket;
     static boolean selfdisconnect;
+    boolean isenter = false;
     private static final long ANIM_DURATION = 1000;
     private View bgViewGroup;
     TextView teamname;
@@ -48,7 +49,7 @@ public class newInMeetingActivity extends Activity {
         sent = (Button)findViewById(R.id.sent);
         msg = (EditText)findViewById(R.id.msg);
         mLayoutManager = new LinearLayoutManager(this);
-        setupLayout();
+        bgViewGroup = findViewById(R.id.background);
         setupWindowAnimations();
         teamname.setText(settings.getString("group", "") + "=" + settings.getString("meeting_title", ""));
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -105,24 +106,24 @@ public class newInMeetingActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-    private void setupLayout() {
-        bgViewGroup = findViewById(R.id.background);
-    }
 
     private void setupWindowAnimations() {
-        setupEnterAnimations();
         setupExitAnimations();
+        setupEnterAnimations();
     }
 
     private void setupEnterAnimations() {
         Transition enterTransition = getWindow().getSharedElementEnterTransition();
         enterTransition.addListener(new Transition.TransitionListener() {
             @Override
-            public void onTransitionStart(Transition transition) {}
+            public void onTransitionStart(Transition transition) {
+
+            }
 
             @Override
             public void onTransitionEnd(Transition transition) {
-                animateRevealShow(bgViewGroup);
+                    animateRevealShow(bgViewGroup);
+                    isenter = true;
             }
 
             @Override
@@ -146,7 +147,10 @@ public class newInMeetingActivity extends Activity {
         returnTransition.addListener(new Transition.TransitionListener() {
             @Override
             public void onTransitionStart(Transition transition) {
+                if(isenter)
                 animateRevealHide(bgViewGroup);
+                bgViewGroup.setVisibility(View.INVISIBLE);
+                isenter = false;
             }
 
             @Override
@@ -169,9 +173,9 @@ public class newInMeetingActivity extends Activity {
         int finalRadius = Math.max(viewRoot.getWidth(), viewRoot.getHeight());
 
         Animator anim = ViewAnimationUtils.createCircularReveal(viewRoot, cx, cy, 0, finalRadius);
-        viewRoot.setVisibility(View.VISIBLE);
         anim.setDuration(ANIM_DURATION);
         anim.start();
+        viewRoot.setVisibility(View.VISIBLE);
     }
 
     private void animateRevealHide(final View viewRoot) {

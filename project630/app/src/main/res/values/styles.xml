@@ -4,5 +4,6 @@
     <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar.Fullscreen">
         <!-- theme customizations -->
         <item name="android:textAllCaps">false</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 </resources>

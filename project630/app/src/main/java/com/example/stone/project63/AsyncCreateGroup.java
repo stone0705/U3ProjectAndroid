@@ -105,7 +105,7 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
                             mContext.startActivity(intent);
                         }
                         if(pass){
-                            intent.setClass(mContext,masterpage.class);
+                            intent.setClass(mContext,newMasterPage.class);
                             mContext.startActivity(intent);
                         }
                     }

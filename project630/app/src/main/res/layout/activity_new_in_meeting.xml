@@ -7,7 +7,7 @@
     android:id="@+id/background"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="#FFffb0D7"
+    android:background="@drawable/meetingbackground"
     tools:context="com.example.stone.project63.newInMeetingActivity">
 
 

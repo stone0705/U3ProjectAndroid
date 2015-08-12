@@ -71,3 +71,6 @@ http://www.grokkingandroid.com/first-glance-androids-recyclerview/
 http://www.codedata.com.tw/mobile/android-tutorial-the-6th-class-2-material-design-recylerview/
 http://blog.csdn.net/guxiao1201/article/details/40399777
 http://antonioleiva.com/recyclerview/
+
+Google Material Design 正體中文版
+http://wcc723.gitbooks.io/google_design_translate/content/

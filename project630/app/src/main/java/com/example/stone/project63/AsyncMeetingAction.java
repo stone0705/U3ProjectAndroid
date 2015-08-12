@@ -151,16 +151,18 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
 
     }
 
-}
-class update implements Runnable{
+    private class update implements Runnable{
 
-    meetingMsg a;
-    public update(meetingMsg a){
-        this.a = a;
+        meetingMsg a;
+        public update(meetingMsg a){
+            this.a = a;
+        }
+        @Override
+        public void run() {
+            newInMeetingActivity.mAdapter.additem(a);
+            newInMeetingActivity.mRecyclerView.scrollToPosition(newInMeetingActivity.mAdapter.getItemCount()-1);
+        }
     }
-    @Override
-    public void run() {
-        newInMeetingActivity.mAdapter.additem(a);
-        newInMeetingActivity.mRecyclerView.scrollToPosition(newInMeetingActivity.mAdapter.getItemCount()-1);
-    }
+
 }
+

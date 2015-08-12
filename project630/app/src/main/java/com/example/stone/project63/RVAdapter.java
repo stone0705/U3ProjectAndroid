@@ -70,3 +70,13 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         });
     }
 }
+class meetingMsg {
+    boolean isSelf;
+    String msg;
+    String account;
+    public meetingMsg(boolean isSelf,String msg,String account){
+        this.msg = msg;
+        this.isSelf = isSelf;
+        this.account = account;
+    }
+}

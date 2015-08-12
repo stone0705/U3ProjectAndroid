@@ -101,10 +101,10 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
             editor.putString("account",account);
             String androidId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
             editor.putString("android_id",androidId);
-            editor.putString("group","qqq");
-            editor.putString("founder","www");
+            editor.putString("group","第一組");
+            editor.putString("founder","qaz");
             editor.commit();
-            intent.setClass(mContext, masterpage.class);
+            intent.setClass(mContext, newMasterPage.class);
             mContext.startActivity(intent);
         }
         else{
@@ -116,7 +116,7 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             if(pass){
-                                intent.setClass(mContext,masterpage.class);
+                                intent.setClass(mContext,newMasterPage.class);
                                 mContext.startActivity(intent);
                             }
                         }
