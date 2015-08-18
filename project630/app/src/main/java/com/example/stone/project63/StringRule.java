@@ -71,6 +71,10 @@ public class StringRule {
         rulemap.put("n1073", 5);
         //創建群組 1100 帳號 android_id 群組
         rulemap.put("n1100", 4);
+        //尋找群組 1101 關鍵字
+        rulemap.put("n1101", 2);
+        //申請加入群組 1102 帳號 android_id 群組 founder
+        rulemap.put("n1102", 5);
         //伺服器端傳送訊息 2030 帳號 text
         rulemap.put("n2030", 3);
         //伺服器端傳送歷史訊息 2031 帳號 text
@@ -88,7 +92,7 @@ public class StringRule {
         rulemap.put("n2071", 5);
         rulemap.put("n2072", 5);
         rulemap.put("n2073", 5);
-        //帳號在其他裝置上登入
+        //帳號在其他裝置上登入 2077
         rulemap.put("n2077", 1);
         //尚未被加入群組
         rulemap.put("n2078", 1);
@@ -98,6 +102,14 @@ public class StringRule {
         rulemap.put("n2100", 1);
         //群組名稱重複
         rulemap.put("n2101", 1);
+        //傳送搜尋到的群組 2102 群組名稱 創立者 人數 群組簡介
+        rulemap.put("n2102", 5);
+        //查無群組 2103
+        rulemap.put("n2103", 1);
+        //申請成功 2104
+        rulemap.put("n2104", 1);
+        //已在群組中 2105
+        rulemap.put("n2105", 1);
         return (int) rulemap.get("n"+findrule);
     }
     public static String standard(String... word){
@@ -155,6 +167,18 @@ public class StringRule {
                 answer = "群組名稱重複";
                 break;
             }
+            case "2103":{
+                answer = "查無群組";
+                break;
+            }
+            case "2104":{
+                answer = "申請成功";
+                break;
+            }
+            case "2105":{
+                answer = "已在群組中";
+                break;
+            }
         }
         return answer;
     }
@@ -198,6 +222,18 @@ public class StringRule {
                 break;
             }
             case "2101":{
+                answer = false;
+                break;
+            }
+            case "2103":{
+                answer = false;
+                break;
+            }
+            case "2104":{
+                answer = true;
+                break;
+            }
+            case "2105":{
                 answer = false;
                 break;
             }

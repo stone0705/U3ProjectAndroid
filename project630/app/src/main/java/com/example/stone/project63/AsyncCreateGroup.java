@@ -47,7 +47,8 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(1100+":"+params[0]+":"+params[1]+":"+params[2]+":\n");
+
+            bw.write(StringRule.standard("1100",params[0],params[1],params[2]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             time = 0;
@@ -66,8 +67,10 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
                 }
             }).start();
             while(!br.ready()){
-                if(time > LONGTIME)
+                if(time > LONGTIME){
+                    socket.close();
                     throw new Exception("long time");
+                }
             }
             String answer = br.readLine();
             socket.close();

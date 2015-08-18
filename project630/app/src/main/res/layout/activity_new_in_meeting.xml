@@ -55,6 +55,7 @@
         android:layout_above="@id/FrameLayout01"
         android:layout_below="@+id/linearLayout1"
         android:layout_weight="1"
+        android:layout_margin="5dp"
         android:dividerHeight="1dp"
         android:fadeScrollbars="true"
         android:scrollbars="vertical" />

@@ -1,15 +1,19 @@
 package com.example.stone.project63;
 
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ActionMenuView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,7 +27,7 @@ public class RVAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.testitem, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.msg_card, viewGroup, false);
         View popupWindow = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.popup_window, viewGroup, false);
         MyViewHolder vh = new MyViewHolder(v,popupWindow);
         return vh;
@@ -31,15 +35,21 @@ public class RVAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        viewHolder.right.setText(i+datalist.get(i).msg);
+        viewHolder.msg.setText(i+datalist.get(i).msg);
+        viewHolder.account.setText(datalist.get(i).account);
+
+        LinearLayout.LayoutParams linear = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         if(datalist.get(i).isSelf){
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            linear.gravity = Gravity.RIGHT;
         }else{
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            linear.gravity = Gravity.LEFT;
         }
-        viewHolder.right.setLayoutParams(params);
+        viewHolder.card.setLayoutParams(params);
+        viewHolder.account.setLayoutParams(linear);
+        viewHolder.msg.setLayoutParams(linear);
     }
 
     @Override
@@ -53,22 +63,27 @@ public class RVAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 }
 class MyViewHolder extends RecyclerView.ViewHolder {
-    Button right;
+    TextView account;
+    TextView msg;
+    CardView card;
     public MyViewHolder(View itemView,View popupWindow) {
         super(itemView);
-        right = (Button)itemView.findViewById(R.id.rightbutton);
+        account = (TextView)itemView.findViewById(R.id.account);
+        msg = (TextView)itemView.findViewById(R.id.msg);
+        card = (CardView)itemView.findViewById(R.id.msgCard);
         final PopupWindow mPopupWindow;
         mPopupWindow = new PopupWindow(popupWindow, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        right.setOnClickListener(new View.OnClickListener() {
+        card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPopupWindow.dismiss();
-                mPopupWindow.showAsDropDown(right);
+                mPopupWindow.showAsDropDown(card);
             }
         });
     }
+
 }
 class meetingMsg {
     boolean isSelf;

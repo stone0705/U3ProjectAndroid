@@ -74,3 +74,14 @@ http://antonioleiva.com/recyclerview/
 
 Google Material Design 正體中文版
 http://wcc723.gitbooks.io/google_design_translate/content/
+
+cardview
+http://www.binpress.com/tutorial/android-l-recyclerview-and-cardview-tutorial/156
+https://developer.android.com/intl/zh-tw/training/material/lists-cards.html
+http://www.codes51.com/article/detail_141966.html
+http://blog.csdn.net/a396901990/article/details/40153759
+http://stackoverflow.com/questions/26892296/using-recyclerview-with-card
+
+SQLserver 全文檢索
+https://msdn.microsoft.com/zh-tw/library/ms142571(v=SQL.120).aspx
+

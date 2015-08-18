@@ -64,8 +64,10 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                 }
             }).start();
             while(!br.ready()){
-                if(time > LONGTIME)
+                if(time > LONGTIME){
+                    socket.close();
                     throw new Exception("long time");
+                }
             }
             String answer = "";
             while(socket.isConnected()){

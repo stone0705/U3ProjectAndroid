@@ -71,8 +71,10 @@ public class AsyncLoginAction extends AsyncTask<String,Integer,Integer> {
                 }
             }).start();
             while(!br.ready()){
-                if(time > LONGTIME)
+                if(time > LONGTIME){
+                    socket.close();
                     throw new Exception("long time");
+                }
             }
             String answer = br.readLine();
             socket.close();

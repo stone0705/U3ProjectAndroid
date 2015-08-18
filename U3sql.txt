@@ -24,6 +24,7 @@ create table thegroup(
  name nvarchar(30) not null,
  founder varchar(20) foreign key references theuser(name),
  number int ,
+ description nvarchar(50),
  primary key(name , founder)
  );
 

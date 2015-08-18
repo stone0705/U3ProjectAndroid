@@ -19,5 +19,8 @@
     <string name="title_activity_test">test</string>
     <string name="title_activity_new_in_meeting">newInMeetingActivity</string>
     <string name="title_activity_new_master_page">newMasterPage</string>
+    <string name="title_activity_find__group_">Find_Group_Activity</string>
+    <string name="title_activity_find_group">FindGroupActivity</string>
+    <string name="title_activity_group_card">groupCardActivity</string>
 
 </resources>
