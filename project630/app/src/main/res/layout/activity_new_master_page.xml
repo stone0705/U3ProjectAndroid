@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="5dp"
+    android:background="@drawable/pinkbackground"
+    tools:context="com.example.stone.project63.newMasterPage">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:measureWithLargestChild="false"
+        android:gravity="center"
+        android:background="@drawable/listbar"
+        android:id="@+id/settinglayout">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="筆記"
+            android:id="@+id/note"
+            android:layout_weight="0.2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="會議"
+            android:id="@+id/chat"
+            android:layout_weight="0.2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="投票"
+            android:id="@+id/vote"
+            android:layout_weight="0.2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="行事曆"
+            android:id="@+id/sched"
+            android:layout_weight="0.2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="個人"
+            android:id="@+id/personal"
+            android:layout_weight="0.2" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/settinglayout"
+        android:layout_height="fill_parent"
+        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/master_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:dividerHeight="1dp"
+            android:fadeScrollbars="true"
+            android:scrollbars="vertical" />
+    </RelativeLayout>
+
+</RelativeLayout>
