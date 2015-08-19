@@ -33,6 +33,7 @@ create table group_user(
  g_founder varchar(20) ,
 foreign key(g_name,g_founder) references thegroup(name,founder),
  u_name varchar(20) foreign key references theuser(name),
+ u_nick_name nvarchar(20),
  add_permit bit,
  remove_permit bit,
  note_permit bit,
@@ -40,6 +41,8 @@ foreign key(g_name,g_founder) references thegroup(name,founder),
  vote_permit bit,
  schdule_permit bit,
  isjoin bit,
+ isfounder bit,
+ enter_time datetime,
  primary key(g_name,g_founder,u_name)
  );
 create table meeting(
@@ -52,13 +55,13 @@ title nvarchar(30),
 foreign key(g_name,g_founder) references thegroup(name,founder),
 );
 
-select a.id,a.title,a.start_time,a.end_time                                           
-from meeting a join group_user b on a.g_name = b.g_name
-where a.g_founder = 'qaz' and a.g_name = '第一組'    
-order by start_time DESC          
 
-insert into group_user values(‘1992-06-07 23:12:4.333’,‘2002-06-07 23:12:4.333’,’second’,’第一組’,’qaz’)  
-
-select *
-from theuser a join group_user b on a.name = b.u_name   
-where b.g_name = ? and b.g_founder = ?
+drop table meeting;
+drop table group_user;
+drop table thegroup;
+drop table saveuser;
+drop table theuser;
+drop table theuser;
+drop table theuser;
+drop table theuser;
+drop table theuser;

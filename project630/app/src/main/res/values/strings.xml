@@ -22,5 +22,10 @@
     <string name="title_activity_find__group_">Find_Group_Activity</string>
     <string name="title_activity_find_group">FindGroupActivity</string>
     <string name="title_activity_group_card">groupCardActivity</string>
+    <string name="title_activity_select_group">SelectGroupActivity</string>
+    <string name="title_activity_group_management">GroupManagementActivity</string>
+    <string name="title_activity_management_group">ManagementGroupActivity</string>
+    <string name="title_activity_get_not_join_list">GetNotJoinListActivity</string>
+    <string name="title_activity_let_he_in">LetHeInActivity</string>
 
 </resources>

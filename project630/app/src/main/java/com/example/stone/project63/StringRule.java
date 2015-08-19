@@ -75,6 +75,14 @@ public class StringRule {
         rulemap.put("n1101", 2);
         //申請加入群組 1102 帳號 android_id 群組 founder
         rulemap.put("n1102", 5);
+        //尋找自己的群組 1103 帳號 android_id
+        rulemap.put("n1103", 3);
+        //取得已加入群組的會員 1104 群組 founder
+        rulemap.put("n1104", 3);
+        //取得待加入群組的會員 1105 群組 founder
+        rulemap.put("n1105", 3);
+        //同意加入 1106 帳號 android_id 群組 founder u_name
+        rulemap.put("n1106", 6);
         //伺服器端傳送訊息 2030 帳號 text
         rulemap.put("n2030", 3);
         //伺服器端傳送歷史訊息 2031 帳號 text
@@ -110,6 +118,14 @@ public class StringRule {
         rulemap.put("n2104", 1);
         //已在群組中 2105
         rulemap.put("n2105", 1);
+        //傳送群組中的成員 2106 name nickname addRight removeRight noteRight meetingRight voteRight schRight isfounder enterTime
+        rulemap.put("n2106", 11);
+        //傳送群組中待加入的成員 2107 name nickname enterTime
+        rulemap.put("n2107", 4);
+        //加入成功 2108
+        rulemap.put("n2108", 1);
+        //加入權限不足 2109
+        rulemap.put("n2109", 1);
         return (int) rulemap.get("n"+findrule);
     }
     public static String standard(String... word){
@@ -179,6 +195,14 @@ public class StringRule {
                 answer = "已在群組中";
                 break;
             }
+            case "2108":{
+                answer = "加入成功";
+                break;
+            }
+            case "2109":{
+                answer = "加入權限不足";
+                break;
+            }
         }
         return answer;
     }
@@ -234,6 +258,14 @@ public class StringRule {
                 break;
             }
             case "2105":{
+                answer = false;
+                break;
+            }
+            case "2108":{
+                answer = true;
+                break;
+            }
+            case "2109":{
                 answer = false;
                 break;
             }

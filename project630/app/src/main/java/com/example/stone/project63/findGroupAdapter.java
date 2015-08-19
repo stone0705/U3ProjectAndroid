@@ -37,6 +37,7 @@ public class findGroupAdapter extends RecyclerView.Adapter<findGroupViewHolder>{
     public void onBindViewHolder(findGroupViewHolder holder, final int position) {
         holder.title.setText("群組名："+datalist.get(position).title);
         holder.founder.setText("創立者："+datalist.get(position).founder);
+        holder.number.setText("人數："+datalist.get(position).number);
         holder.description.setText("簡介："+datalist.get(position).description);
         final View shareView = holder.card;
         holder.card.setOnClickListener(new View.OnClickListener() {
@@ -73,11 +74,13 @@ class findGroupViewHolder extends RecyclerView.ViewHolder{
     TextView title;
     TextView founder;
     TextView description;
+    TextView number;
     CardView card;
     public findGroupViewHolder(View itemView) {
         super(itemView);
         title = (TextView)itemView.findViewById(R.id.groupTitle);
         founder = (TextView)itemView.findViewById(R.id.groupFounder);
+        number = (TextView)itemView.findViewById(R.id.groupNumber);
         description = (TextView)itemView.findViewById(R.id.groupDes);
         card = (CardView)itemView.findViewById(R.id.groupCard);
     }
@@ -86,9 +89,19 @@ class findGroupItem implements Serializable {
     String title;
     String founder;
     String description;
-    public findGroupItem(String title,String founder,String description){
+    String number;
+    boolean isSelect = false;
+    public findGroupItem(String title,String founder,String number,String description){
         this.title = title;
         this.founder = founder;
         this.description = description;
+        this.number = number;
+    }
+    public findGroupItem(String title,String founder,String number,String description,boolean isSelect){
+        this.title = title;
+        this.founder = founder;
+        this.description = description;
+        this.number = number;
+        this.isSelect = isSelect;
     }
 }

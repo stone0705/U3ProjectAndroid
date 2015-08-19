@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -15,16 +14,16 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by stone on 2015/8/18.
+ * Created by stone on 2015/8/19.
  */
-public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
+public class AsyncSelectGroup extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
     ProgressDialog dialog;
     boolean pass;
     String response;
     Context mContext;
-    public AsyncFindGroup(Context mContext){
+    public AsyncSelectGroup(Context mContext){
         this.mContext = mContext;
         dialog = new ProgressDialog(mContext);
     }
@@ -46,7 +45,7 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard("1101",params[0]));
+            bw.write(StringRule.standard("1103",params[0],params[1]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             time = 0;
@@ -80,7 +79,7 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
                     break;
                 }else{
                     if(dString[0].equals("2102")){
-                        FindGroupActivity.mHandler.post(new update(new findGroupItem(dString[1],dString[2],dString[3],dString[4])));
+                        SelectGroupActivity.mHandler.post(new update(new findGroupItem(dString[1],dString[2],dString[3],dString[4],true)));
                     }
                     if(dString[0].equals("2103")){
                         pass = StringRule.isSucces(dString[0]);
@@ -125,7 +124,8 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
         }
         @Override
         public void run() {
-            FindGroupActivity.mAdapter.additem(a);
+            SelectGroupActivity.mAdapter.additem(a);
         }
     }
 }
+

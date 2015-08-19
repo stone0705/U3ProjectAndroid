@@ -1,6 +1,9 @@
 package com.example.stone.project63;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -39,13 +43,28 @@ public class FindGroupActivity extends Activity {
         findgroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.removeAll();
-                AsyncFindGroup action = new AsyncFindGroup(FindGroupActivity.this);
-                action.execute(findtext.getText().toString());
+                if(findtext.getText().toString().equals("")){
+                    String response;
+                    response = "請輸入關鍵字";
+                    AlertDialog alertDialog = new AlertDialog.Builder(FindGroupActivity.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage(response);
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                else{
+                    mAdapter.removeAll();
+                    AsyncFindGroup action = new AsyncFindGroup(FindGroupActivity.this);
+                    action.execute(findtext.getText().toString());
+                }
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

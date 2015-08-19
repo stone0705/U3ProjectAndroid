@@ -1,6 +1,8 @@
 package com.example.stone.project63;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ColorFilter;
@@ -12,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,6 +89,34 @@ public class newMasterPage extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(newMasterPage.this).create();
+            alertDialog.setTitle("登出");
+            alertDialog.setMessage("確定要登出嗎");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,"確定",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(newMasterPage.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,"取消",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                }
+            });
+            alertDialog.show();
+
+            //當返回按鈕，按下所需要去觸發的動作，如:彈跳出對話視窗
+
+        }
+        return false;
     }
     void listener(){
         note.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +196,9 @@ public class newMasterPage extends Activity {
                 setting.getBackground().setColorFilter(high);
                 mAdapter.additem(new masterItem("","創建群組","",false,createGroupActivity.class));
                 mAdapter.additem(new masterItem("","尋找群組","",false,FindGroupActivity.class));
+                mAdapter.additem(new masterItem("","切換群組","",false,SelectGroupActivity.class));
+                mAdapter.additem(new masterItem("","管理群組","",false,ManagementGroupActivity.class));
+                mAdapter.additem(new masterItem("","審核成員","",false,GetNotJoinListActivity.class));
                 break;
             }
         }

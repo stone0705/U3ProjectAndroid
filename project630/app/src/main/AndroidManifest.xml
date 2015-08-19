@@ -55,6 +55,22 @@
             android:name=".groupCardActivity"
             android:label="@string/title_activity_group_card" >
         </activity>
+        <activity
+            android:name=".SelectGroupActivity"
+            android:label="@string/title_activity_select_group" >
+        </activity>
+        <activity
+            android:name=".ManagementGroupActivity"
+            android:label="@string/title_activity_management_group" >
+        </activity>
+        <activity
+            android:name=".GetNotJoinListActivity"
+            android:label="@string/title_activity_get_not_join_list" >
+        </activity>
+        <activity
+            android:name=".LetHeInActivity"
+            android:label="@string/title_activity_let_he_in" >
+        </activity>
     </application>
 
 </manifest>

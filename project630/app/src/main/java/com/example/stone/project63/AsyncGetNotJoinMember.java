@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -15,16 +14,16 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by stone on 2015/8/18.
+ * Created by stone on 2015/8/19.
  */
-public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
+public class AsyncGetNotJoinMember extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
     ProgressDialog dialog;
     boolean pass;
     String response;
     Context mContext;
-    public AsyncFindGroup(Context mContext){
+    public AsyncGetNotJoinMember(Context mContext){
         this.mContext = mContext;
         dialog = new ProgressDialog(mContext);
     }
@@ -35,7 +34,7 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
         super.onPreExecute();
         // 背景工作處理"前"需作的事
         dialog.setMessage("請等待");
-        dialog.setTitle("尋找中");
+        dialog.setTitle("取得成員清單中");
         dialog.setCancelable(false);
         dialog.show();
     }
@@ -46,7 +45,7 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard("1101",params[0]));
+            bw.write(StringRule.standard("1105",params[0],params[1]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             time = 0;
@@ -79,13 +78,8 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
                     pass = true;
                     break;
                 }else{
-                    if(dString[0].equals("2102")){
-                        FindGroupActivity.mHandler.post(new update(new findGroupItem(dString[1],dString[2],dString[3],dString[4])));
-                    }
-                    if(dString[0].equals("2103")){
-                        pass = StringRule.isSucces(dString[0]);
-                        response = StringRule.responseString(dString[0]);
-                        break;
+                    if(dString[0].equals("2107")){
+                        GetNotJoinListActivity.mHandler.post(new update(new memberNormalItem(dString[1],dString[2],dString[3])));
                     }
                 }
             }
@@ -119,13 +113,13 @@ public class AsyncFindGroup extends AsyncTask<String,Integer,Integer> {
         }
     }
     private class update implements Runnable{
-        findGroupItem a;
-        public update(findGroupItem a){
+        memberNormalItem a;
+        public update(memberNormalItem a){
             this.a = a;
         }
         @Override
         public void run() {
-            FindGroupActivity.mAdapter.additem(a);
+            GetNotJoinListActivity.mAdapter.additem(a);
         }
     }
 }
