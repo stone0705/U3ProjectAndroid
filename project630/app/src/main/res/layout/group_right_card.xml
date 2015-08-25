@@ -69,7 +69,8 @@
                     android:text="移除會員"
                     android:id="@+id/removeRight"
                     android:layout_weight="0.5"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:clickable="false"/>
 
             </LinearLayout>
 
@@ -85,7 +86,8 @@
                     android:text="管理筆記"
                     android:id="@+id/noteRight"
                     android:layout_weight="0.25"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:clickable="false"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -93,7 +95,8 @@
                     android:text="管理會議"
                     android:id="@+id/meetingRight"
                     android:layout_weight="0.25"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:clickable="false"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -101,7 +104,8 @@
                     android:text="管理投票"
                     android:id="@+id/voteRight"
                     android:layout_weight="0.25"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:clickable="false"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -109,7 +113,8 @@
                     android:text="管理行事歷"
                     android:id="@+id/schRight"
                     android:layout_weight="0.25"
-                    android:checked="false" />
+                    android:checked="false"
+                    android:clickable="false"/>
             </LinearLayout>
         </LinearLayout>
 

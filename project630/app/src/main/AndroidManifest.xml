@@ -75,6 +75,10 @@
             android:name=".CreateMeetingActivity"
             android:label="@string/title_activity_creatw_meeting" >
         </activity>
+        <activity
+            android:name=".ChangeRightActivity"
+            android:label="@string/title_activity_change_right" >
+        </activity>
     </application>
 
 </manifest>

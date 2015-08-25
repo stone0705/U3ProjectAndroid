@@ -28,5 +28,6 @@
     <string name="title_activity_get_not_join_list">GetNotJoinListActivity</string>
     <string name="title_activity_let_he_in">LetHeInActivity</string>
     <string name="title_activity_creatw_meeting">CreatwMeetingActivity</string>
+    <string name="title_activity_change_right">ChangeRightActivity</string>
 
 </resources>

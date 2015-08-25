@@ -1,7 +1,9 @@
 package com.example.stone.project63;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,7 +35,7 @@ public class memberRightCardAdapter extends RecyclerView.Adapter<memberRightView
     }
 
     @Override
-    public void onBindViewHolder(memberRightViewHolder holder, int position) {
+    public void onBindViewHolder(final memberRightViewHolder holder, final int position) {
         memberRightItem item = datalist.get(position);
         holder.isFounder.setChecked(item.isFounder);
         holder.addRight.setChecked(item.addRight);
@@ -45,6 +47,17 @@ public class memberRightCardAdapter extends RecyclerView.Adapter<memberRightView
         holder.name.setText("帳號：" + item.name);
         holder.nickname.setText("暱稱："+item.nickname);
         holder.enterTime.setText("加入時間："+item.enterTime);
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("member",datalist.get(position));
+                intent.setClass(mContext,ChangeRightActivity.class);
+                View shareView = holder.card;
+                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, shareView , "memberRightCard");
+                mContext.startActivity(intent, transitionActivityOptions.toBundle());
+            }
+        });
     }
 
     @Override
