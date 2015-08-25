@@ -85,3 +85,5 @@ http://stackoverflow.com/questions/26892296/using-recyclerview-with-card
 SQLserver 全文檢索
 https://msdn.microsoft.com/zh-tw/library/ms142571(v=SQL.120).aspx
 
+android 日期時間選擇
+http://terryyamg.blogspot.tw/2015/03/android-jump-datepicker-timepicker.html

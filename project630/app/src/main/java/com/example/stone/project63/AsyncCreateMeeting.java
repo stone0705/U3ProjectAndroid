@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -16,21 +15,17 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by stone on 2015/7/8.
+ * Created by stone on 2015/8/25.
  */
-public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
+public class AsyncCreateMeeting extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
     ProgressDialog dialog;
     boolean pass;
-    String group, founder, response;
+    String response;
     Context mContext;
-    SharedPreferences settings;
-    SharedPreferences.Editor editor;
-    boolean backtologin = false;
-    public AsyncCreateGroup(Context mContext,SharedPreferences settings){
+    public AsyncCreateMeeting(Context mContext){
         this.mContext = mContext;
-        this.settings = settings;
         dialog = new ProgressDialog(mContext);
     }
     @Override
@@ -51,9 +46,7 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard("1100",params[0],params[1],params[2]));
-            group = params[2];
-            founder = params[0];
+            bw.write(StringRule.standard("1030",params[0],params[1],params[2],params[3],params[4],params[5],params[6]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             time = 0;
@@ -77,14 +70,12 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
                     throw new Exception("long time");
                 }
             }
-            String answer = br.readLine();
-            socket.close();
+            String answer;
+            answer = br.readLine();
             String[] dString = StringRule.divide(answer);
-            response = StringRule.responseString(dString[0]);
             pass = StringRule.isSucces(dString[0]);
-            if(dString[0].equals("2077")){
-                backtologin = true;
-            }
+            response = StringRule.responseString(dString[0]);
+            socket.close();
         }
         catch (Exception ex){
             System.out.println(ex.toString());
@@ -100,7 +91,6 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        editor = settings.edit();
         final Intent intent = new Intent();
         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
         alertDialog.setTitle("Alert");
@@ -109,15 +99,8 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if(backtologin){
-                            intent.setClass(mContext,MainActivity.class);
-                            mContext.startActivity(intent);
-                        }
                         if(pass){
                             intent.setClass(mContext,newMasterPage.class);
-                            editor.putString("group",group);
-                            editor.putString("founder",founder);
-                            editor.commit();
                             mContext.startActivity(intent);
                         }
                     }
@@ -125,5 +108,4 @@ public class AsyncCreateGroup extends AsyncTask<String,Integer,Integer> {
         alertDialog.setMessage(response);
         alertDialog.show();
     }
-
 }

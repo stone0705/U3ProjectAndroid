@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class createGroupActivity extends Activity {
+public class CreateGroupActivity extends Activity {
     Button create;
     EditText group;
     static String response = "";
@@ -32,7 +32,7 @@ public class createGroupActivity extends Activity {
             public void onClick(View v) {
                 if (group.getText().toString().equals("")) {
                     response = "請輸入完所有項目";
-                    AlertDialog alertDialog = new AlertDialog.Builder(createGroupActivity.this).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(CreateGroupActivity.this).create();
                     alertDialog.setTitle("Alert");
                     alertDialog.setMessage(response);
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -43,7 +43,7 @@ public class createGroupActivity extends Activity {
                             });
                     alertDialog.show();
                 } else {
-                    AsyncCreateGroup sub = new AsyncCreateGroup(createGroupActivity.this);
+                    AsyncCreateGroup sub = new AsyncCreateGroup(CreateGroupActivity.this,settings);
                     sub.execute(settings.getString("account",""),settings.getString("android_id",""),group.getText().toString());
                 }
             }

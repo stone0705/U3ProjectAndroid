@@ -194,11 +194,12 @@ public class newMasterPage extends Activity {
             }
             case 5:{
                 setting.getBackground().setColorFilter(high);
-                mAdapter.additem(new masterItem("","創建群組","",false,createGroupActivity.class));
+                mAdapter.additem(new masterItem("","創建群組","",false,CreateGroupActivity.class));
                 mAdapter.additem(new masterItem("","尋找群組","",false,FindGroupActivity.class));
                 mAdapter.additem(new masterItem("","切換群組","",false,SelectGroupActivity.class));
                 mAdapter.additem(new masterItem("","管理群組","",false,ManagementGroupActivity.class));
                 mAdapter.additem(new masterItem("","審核成員","",false,GetNotJoinListActivity.class));
+                mAdapter.additem(new masterItem("","創建會議","",false,CreateMeetingActivity.class));
                 break;
             }
         }

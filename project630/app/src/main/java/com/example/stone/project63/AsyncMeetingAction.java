@@ -72,7 +72,6 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
             String answer = "";
             while(socket.isConnected()){
                 if((answer = br.readLine())==null){break;}
-                System.out.println(answer);
                 divide = StringRule.divide(answer);
                 if(divide[0].equals("0000")||divide[0].equals("2077")||divide[0].equals("2078")||divide[0].equals("2079")){
                     pass = StringRule.isSucces(divide[0]);

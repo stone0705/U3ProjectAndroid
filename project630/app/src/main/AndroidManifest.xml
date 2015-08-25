@@ -36,7 +36,7 @@
             android:label="@string/title_activity_submit" >
         </activity>
         <activity
-            android:name=".createGroupActivity"
+            android:name=".CreateGroupActivity"
             android:label="@string/title_activity_create_group" >
         </activity>
         <activity
@@ -70,6 +70,10 @@
         <activity
             android:name=".LetHeInActivity"
             android:label="@string/title_activity_let_he_in" >
+        </activity>
+        <activity
+            android:name=".CreateMeetingActivity"
+            android:label="@string/title_activity_creatw_meeting" >
         </activity>
     </application>
 
