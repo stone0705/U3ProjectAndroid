@@ -72,6 +72,7 @@ http://www.codedata.com.tw/mobile/android-tutorial-the-6th-class-2-material-desi
 http://blog.csdn.net/guxiao1201/article/details/40399777
 http://antonioleiva.com/recyclerview/
 
+
 Google Material Design 正體中文版
 http://wcc723.gitbooks.io/google_design_translate/content/
 
@@ -87,3 +88,10 @@ https://msdn.microsoft.com/zh-tw/library/ms142571(v=SQL.120).aspx
 
 android 日期時間選擇
 http://terryyamg.blogspot.tw/2015/03/android-jump-datepicker-timepicker.html
+http://stackoverflow.com/questions/7913264/compare-two-timestamp-in-java
+
+屬性動畫
+http://blog.csdn.net/singwhatiwanna/article/details/17841165
+
+動畫設計
+http://stackoverflow.com/questions/27642644/recyclerview-animation-on-item-click
