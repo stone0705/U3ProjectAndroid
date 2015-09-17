@@ -71,7 +71,8 @@ http://www.grokkingandroid.com/first-glance-androids-recyclerview/
 http://www.codedata.com.tw/mobile/android-tutorial-the-6th-class-2-material-design-recylerview/
 http://blog.csdn.net/guxiao1201/article/details/40399777
 http://antonioleiva.com/recyclerview/
-
+https://github.com/bignerdranch/expandable-recycler-view
+http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0724/3219.html
 
 Google Material Design 正體中文版
 http://wcc723.gitbooks.io/google_design_translate/content/
@@ -93,5 +94,28 @@ http://stackoverflow.com/questions/7913264/compare-two-timestamp-in-java
 屬性動畫
 http://blog.csdn.net/singwhatiwanna/article/details/17841165
 
-動畫設計
+recycler動畫設計
 http://stackoverflow.com/questions/27642644/recyclerview-animation-on-item-click
+
+ItemTouchHelper
+http://yuki312.blogspot.tw/2015/06/recyclerview-itemtouchhelper.html
+https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf
+https://developer.android.com/intl/zh-tw/reference/android/support/v7/widget/helper/ItemTouchHelper.Callback.html
+
+DesignSupportLibrary
+http://jcodecraeer.com/a/anzhuokaifa/developer/2015/0531/2958.html
+http://android-developers.blogspot.tw/2015/05/android-design-support-library.html
+https://medium.com/ribot-labs/exploring-the-new-android-design-support-library-b7cda56d2c32
+
+新UI
+http://blog.csdn.net/feiduclear_up/article/details/46619637
+
+大陸android論壇
+http://www.eoeandroid.com/forum-27-1.html
+
+android動畫研究
+http://www.eoeandroid.com/thread-653-1-1.html
+http://blog.csdn.net/lmj623565791/article/details/38067475
+
+fragment
+http://blog.csdn.net/lmj623565791/article/details/37970961
