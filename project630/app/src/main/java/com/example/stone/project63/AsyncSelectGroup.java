@@ -43,7 +43,7 @@ public class AsyncSelectGroup extends AsyncTask<String,Integer,Integer> {
         //doInBackground是在Background Thread進行
         int result = 0;
         try{
-            Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
+            Socket socket = new Socket(InetAddress.getByName(mContext.getString(R.string.myip)),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bw.write(StringRule.standard("1103",params[0],params[1]));
             bw.flush();

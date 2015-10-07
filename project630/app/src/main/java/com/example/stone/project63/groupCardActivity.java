@@ -51,7 +51,7 @@ public class groupCardActivity extends Activity {
                     editor.putString("group",item.title);
                     editor.putString("founder",item.founder);
                     editor.commit();
-                    intent.setClass(groupCardActivity.this,newMasterPage.class);
+                    intent.setClass(groupCardActivity.this,MasterTabActivity.class);
                     groupCardActivity.this.startActivity(intent);
                 }else{
                     AsyncApplyAction action = new AsyncApplyAction(groupCardActivity.this);

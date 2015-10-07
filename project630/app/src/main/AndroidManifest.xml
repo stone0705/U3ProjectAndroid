@@ -44,10 +44,6 @@
             android:label="@string/title_activity_new_in_meeting" >
         </activity>
         <activity
-            android:name=".newMasterPage"
-            android:label="@string/title_activity_new_master_page" >
-        </activity>
-        <activity
             android:name=".FindGroupActivity"
             android:label="@string/title_activity_find_group" >
         </activity>
@@ -78,6 +74,10 @@
         <activity
             android:name=".ChangeRightActivity"
             android:label="@string/title_activity_change_right" >
+        </activity>
+        <activity
+            android:name=".MasterTabActivity"
+            android:label="@string/mastertab" >
         </activity>
     </application>
 

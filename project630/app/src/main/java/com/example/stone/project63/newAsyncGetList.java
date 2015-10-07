@@ -1,12 +1,13 @@
 package com.example.stone.project63;
 
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -25,12 +26,14 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
     ProgressDialog dialog;
     boolean pass;
     boolean backtologin = false;
+    MasterRecycler MR;
     String response;
     Context mContext;
     ArrayList<masterItem> list;
-    public newAsyncGetList(Context mContext){
+    public newAsyncGetList(Context mContext,MasterRecycler MR){
         this.mContext = mContext;
         dialog = new ProgressDialog(mContext);
+        this.MR = MR;
     }
     @Override
     protected void onPreExecute() {
@@ -38,7 +41,7 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
         // TODO Auto-generated method stub
         super.onPreExecute();
         // 背景工作處理"前"需作的事
-        newMasterPage.mAdapter.removeAll();
+        MR.mAdapter.removeAll();
         dialog.setMessage("請等待");
         dialog.setTitle("讀取中");
         dialog.setCancelable(false);
@@ -49,7 +52,7 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
         //doInBackground是在Background Thread進行
         int result = 0;
         try{
-            Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
+            Socket socket = new Socket(InetAddress.getByName(mContext.getString(R.string.myip)),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bw.write(StringRule.standard(params[0],params[1],params[2],params[3],params[4]));
             bw.flush();
@@ -96,7 +99,7 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
                         update a =new update(new masterItem(divide[1],divide[2]
                                 , Timestamp.valueOf(divide[3]),Timestamp.valueOf(divide[4])
                                 ,"newmeetingmenu",true,newInMeetingActivity.class));
-                        newMasterPage.mHandler.post(a);
+                        MR.mHandler.post(a);
                         break;
                     }
                     case("2072"):{
@@ -132,7 +135,7 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if(backtologin){
-                            intent.setClass(mContext,MainActivity.class);
+                            intent.setClass(mContext,MasterTabActivity.class);
                             mContext.startActivity(intent);
                         }
                     }
@@ -143,14 +146,14 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
             alertDialog.show();
         }
     }
-    private class update implements Runnable{
+    private class update implements Runnable {
         masterItem a;
         public update(masterItem a){
             this.a = a;
         }
         @Override
         public void run() {
-            newMasterPage.mAdapter.additem(a);
+            MR.mAdapter.additem(a);
         }
     }
 }

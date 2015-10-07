@@ -44,7 +44,7 @@ public class AsyncChangeRight extends AsyncTask<String,Integer,Integer> {
         //doInBackground是在Background Thread進行
         int result = 0;
         try{
-            Socket socket = new Socket(InetAddress.getByName("10.0.2.2"),5050);
+            Socket socket = new Socket(InetAddress.getByName(mContext.getString(R.string.myip)),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bw.write(StringRule.standard("1107",params[0],params[1],params[2],params[3]
                     ,params[4],params[5],params[6],params[7],params[8],params[9],params[10]));
@@ -101,7 +101,7 @@ public class AsyncChangeRight extends AsyncTask<String,Integer,Integer> {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if(pass){
-                            intent.setClass(mContext,newMasterPage.class);
+                            intent.setClass(mContext,MasterTabActivity.class);
                             mContext.startActivity(intent);
                         }
                     }

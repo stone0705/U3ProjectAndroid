@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/nav_createGroup"
+        android:title="創建群組" />
+        <item
+            android:id="@+id/nav_findGroup"
+            android:title="尋找群組" />
+        <item
+            android:id="@+id/nav_switchGroup"
+            android:title="切換群組" />
+        <item
+            android:id="@+id/nav_managerGroup"
+            android:title="管理群組" />
+        <item
+            android:id="@+id/nav_checkMember"
+            android:title="審核成員" />
+        <item
+            android:id="@+id/nav_createMeeting"
+            android:title="創建會議" />
+
+    </group>
+</menu>
