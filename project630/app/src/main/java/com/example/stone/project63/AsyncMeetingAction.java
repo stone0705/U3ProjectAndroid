@@ -25,8 +25,10 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
     boolean backtologin = false;
     String response;
     Context mContext;
+    ANT ant;
     public AsyncMeetingAction(Context mContext){
         this.mContext = mContext;
+        ant = new ANT(mContext);
     }
     @Override
     protected void onPreExecute() {
@@ -44,7 +46,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
             Socket socket = new Socket(InetAddress.getByName(mContext.getString(R.string.myip)),5050);
             newInMeetingActivity.socket = socket;
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard(params[0],params[1],params[2],params[3]));
+            bw.write(StringRule.standard(params[0],params[1],params[2],params[3],params[4],params[5]));
             bw.flush();
             final BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String[] divide;
@@ -70,6 +72,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                 }
             }
             String answer = "";
+            int statecount = 0;
             while(socket.isConnected()){
                 if((answer = br.readLine())==null){break;}
                 divide = StringRule.divide(answer);
@@ -79,18 +82,31 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                     if(divide[0].equals("2077")){
                         backtologin = true;
                     }
-                    break;}
-                if(divide[0].equals("2031")){
-                    if(params[1].equals(divide[1])){
-                        newInMeetingActivity.mHandler.post(new update(new meetingMsg(true,divide[2],divide[1])));
+                    if(divide[0].equals("0000")&&statecount < 1){
+                        statecount++;
                     }else{
-                        newInMeetingActivity.mHandler.post(new update(new meetingMsg(false,divide[2],divide[1])));
+                        break;
                     }
-                }else{
-                    if(params[1].equals(divide[1])){
-                        tempMsg.add(new meetingMsg(true,divide[2],divide[1]));
-                    }else{
-                        tempMsg.add(new meetingMsg(false,divide[2],divide[1]));
+                }
+                switch (divide[0]){
+                    case"2031":{
+                        if(params[1].equals(divide[1])){
+                            newInMeetingActivity.mHandler.post(new update(new meetingMsg(true,divide[2],divide[1])));
+                        }else{
+                            newInMeetingActivity.mHandler.post(new update(new meetingMsg(false,divide[2],divide[1])));
+                        }
+                        break;
+                    }
+                    case"2030":{
+                        if(params[1].equals(divide[1])){
+                            tempMsg.add(new meetingMsg(true,divide[2],divide[1]));
+                        }else{
+                            tempMsg.add(new meetingMsg(false,divide[2],divide[1]));
+                        }
+                        break;
+                    }
+                    case"2032":{
+                        ant.putTable(divide[1],divide[2]);
                     }
                 }
             }

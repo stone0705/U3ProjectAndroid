@@ -1,5 +1,6 @@
 package com.example.stone.project63;
 
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +23,10 @@ import java.util.ArrayList;
  */
 public class RVAdapter extends RecyclerView.Adapter<MyViewHolder> {
     ArrayList<meetingMsg> datalist;
-    public RVAdapter(ArrayList<meetingMsg> datalist){
+    ANT ant;
+    public RVAdapter(ArrayList<meetingMsg> datalist,Context context){
         this.datalist = datalist;
+        ant = new ANT(context);
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -35,9 +38,12 @@ public class RVAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        viewHolder.msg.setText(i+datalist.get(i).msg);
-        viewHolder.account.setText(datalist.get(i).account);
-
+        viewHolder.msg.setText(datalist.get(i).msg);
+        if(ant.isANT()){
+            viewHolder.account.setText(ant.Transfer(datalist.get(i).account));
+        }else{
+            viewHolder.account.setText(datalist.get(i).account);
+        }
         LinearLayout.LayoutParams linear = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if(datalist.get(i).isSelf){
