@@ -5,3 +5,5 @@ group
 founder
 meeting_id
 meeting_title
+
+boolean: isant

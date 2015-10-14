@@ -53,8 +53,8 @@ public class newInMeetingActivity extends Activity {
         setupWindowAnimations();
         teamname.setText(settings.getString("group", "") + "=" + settings.getString("meeting_title", ""));
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RVAdapter(msglist,this);
-        mRecyclerView.setAdapter(mAdapter);
+        //mAdapter = new RVAdapter(msglist,this);
+        //mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,6 @@ public class newInMeetingActivity extends Activity {
     public void onPause(){
         super.onPause();
         try {
-            msglist = new ArrayList<meetingMsg>();
             selfdisconnect = true;
             socket.close();
         } catch (IOException e) {
@@ -80,7 +79,9 @@ public class newInMeetingActivity extends Activity {
     public void onResume(){
         super.onResume();
         selfdisconnect = false;
+        msglist = new ArrayList<meetingMsg>();
         mAdapter = new RVAdapter(msglist,this);
+        mRecyclerView.setAdapter(mAdapter);
         AsyncMeetingAction action = new AsyncMeetingAction(newInMeetingActivity.this);
         action.execute("1031",settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""),settings.getString("group",""),settings.getString("founder",""));
     }
