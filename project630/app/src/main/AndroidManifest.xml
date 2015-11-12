@@ -79,6 +79,11 @@
             android:name=".MasterTabActivity"
             android:label="@string/mastertab" >
         </activity>
+        <activity
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:name=".CreateVoteActivity"
+            android:label="@string/title_activity_create_vote" >
+        </activity>
     </application>
 
 </manifest>

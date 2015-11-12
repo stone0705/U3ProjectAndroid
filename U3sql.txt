@@ -55,6 +55,24 @@ title nvarchar(30),
 foreign key(g_name,g_founder) references thegroup(name,founder),
 );
 
+create table group_vote(
+Id int not null identity(1, 1) primary key,
+ g_name nvarchar(30) ,
+ g_founder varchar(20) ,
+foreign key(g_name,g_founder) references thegroup(name,founder),
+title nvarchar(30),
+createman varchar(20),
+start_time datetime,
+end_time datetime
+)
+
+create table vote_user(
+vote_id int references group_vote(id),
+u_name varchar(20) foreign key references theuser(name),
+option_id int,
+isvote bit
+)
+
 
 drop table meeting;
 drop table group_user;

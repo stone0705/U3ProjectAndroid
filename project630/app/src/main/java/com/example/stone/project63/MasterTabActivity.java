@@ -99,6 +99,11 @@ public class MasterTabActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     }
+                    case(R.id.nav_createVote):{
+                        Intent intent = new Intent();
+                        intent.setClass(MasterTabActivity.this,CreateVoteActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 menuItem.setChecked(false);
                 drawerLayout.closeDrawers();

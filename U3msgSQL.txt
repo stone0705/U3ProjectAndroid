@@ -1,0 +1,7 @@
+create table msg0(
+meeting_id int,
+username varchar(20) not null,
+msg_time datetime,
+msg_string nvarchar(200)
+);
+table±q0¨ì19

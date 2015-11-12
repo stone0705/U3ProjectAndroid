@@ -14,11 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class MasterRecycler extends Fragment {
         masterAdapter mAdapter;
-    ArrayList<masterItem> datalset = new ArrayList<masterItem>();
+    ArrayList<Object> datalset = new ArrayList<Object>();
     Handler mHandler = new Handler();
     private int type;
     SharedPreferences settings;
@@ -63,6 +64,8 @@ public class MasterRecycler extends Fragment {
                 break;
             }
             case 3:{
+
+                newAsyncGetList async = new newAsyncGetList(recyclerView.getContext(),MasterRecycler.this);
                 break;
             }
             case 4:{
@@ -75,6 +78,7 @@ public class MasterRecycler extends Fragment {
                 mAdapter.additem(new masterItem("","管理群組","",false,ManagementGroupActivity.class));
                 mAdapter.additem(new masterItem("","審核成員","",false,GetNotJoinListActivity.class));
                 mAdapter.additem(new masterItem("","創建會議","",false,CreateMeetingActivity.class));
+                mAdapter.additem(new masterItem("","發起投票","",false,CreateVoteActivity.class));
                 break;
             }
         }

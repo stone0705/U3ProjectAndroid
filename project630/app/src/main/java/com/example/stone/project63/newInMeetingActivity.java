@@ -59,7 +59,7 @@ public class newInMeetingActivity extends Activity {
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AsyncSentAction sentAction = new AsyncSentAction();
+                AsyncSentAction sentAction = new AsyncSentAction(newInMeetingActivity.this);
                 sentAction.execute("1032",settings.getString("account",""),msg.getText().toString(),settings.getString("meeting_id", ""),settings.getString("android_id",""));
             }
         });

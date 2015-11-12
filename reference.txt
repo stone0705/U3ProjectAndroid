@@ -1,4 +1,4 @@
-自己動手設計搜尋引擎
+﻿自己動手設計搜尋引擎
 http://ccckmit.wikidot.com/code:searcher
 
 How to get server message correctly
@@ -119,3 +119,6 @@ http://blog.csdn.net/lmj623565791/article/details/38067475
 
 fragment
 http://blog.csdn.net/lmj623565791/article/details/37970961
+
+資料庫分表設計
+http://blog.51yip.com/mysql/949.html

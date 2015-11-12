@@ -96,10 +96,11 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
                         break;
                     }
                     case("2071"):{
-                        update a =new update(new masterItem(divide[1],divide[2]
+                        masterItem item = new masterItem(divide[1],divide[2]
                                 , Timestamp.valueOf(divide[3]),Timestamp.valueOf(divide[4])
-                                ,"newmeetingmenu",true,newInMeetingActivity.class));
-                        MR.mHandler.post(a);
+                                ,"titleText",true,newInMeetingActivity.class);
+                        update updateMeetingItem =new update(item);
+                        MR.mHandler.post(updateMeetingItem);
                         break;
                     }
                     case("2072"):{

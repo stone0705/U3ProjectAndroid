@@ -61,6 +61,10 @@ public class StringRule {
         rulemap.put("n1031", 6);
         //客戶端傳送訊息 1032 帳號 text meeting_id android_id
         rulemap.put("n1032", 5);
+        //創建 Vote 1040 帳號 android_id 群組 founder title start_time end_time
+        rulemap.put("n1040",8);
+        //創建Vote選項  1041 帳號 android_id vote_id option_string
+        rulemap.put("n1041",4);
         //獲得筆記列表 1070 帳號 android_id 群組 founder
         rulemap.put("n1070", 5);
         //獲得會議列表 1071 帳號 android_id 群組 founder
@@ -91,6 +95,8 @@ public class StringRule {
         rulemap.put("n2031", 3);
         //伺服器傳送ANT列表 2032 帳號 nickname
         rulemap.put("n2032",3);
+        //傳送Vote_id 2040 vote_id
+        rulemap.put("n2040", 2);
         //註冊成功 2000
         rulemap.put("n2000", 1);
         //註冊失敗 有相同的帳號 2001

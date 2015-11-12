@@ -1,0 +1,7 @@
+create table vote0(
+Id int not null identity(1, 1) primary key,
+vote_id int,
+vote_string nvarchar(200),
+number int
+);
+table±q0¨ì19

@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -19,12 +21,14 @@ import java.util.ArrayList;
 /**
  * Created by stone on 2015/8/12.
  */
-public class masterAdapter extends RecyclerView.Adapter<masterViewHolder> {
-    ArrayList<masterItem> datalist;
+public class masterAdapter extends RecyclerView.Adapter {
+    ArrayList<Object> datalist;
     Context mContext;
     SharedPreferences.Editor editor;
     Activity mActivity;
-    public masterAdapter(ArrayList<masterItem> datalist,Context mContext,SharedPreferences settings,Activity mActivity){
+    final int TYPE_VOTE = 1;
+    final int TYPE_MEETING = 0;
+    public masterAdapter(ArrayList<Object> datalist,Context mContext,SharedPreferences settings,Activity mActivity){
         this.datalist = datalist;
         this.mContext = mContext;
         editor = settings.edit();
@@ -32,27 +36,49 @@ public class masterAdapter extends RecyclerView.Adapter<masterViewHolder> {
 
     }
     @Override
-    public masterViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.masteritem, viewGroup, false);
-        masterViewHolder vh = new masterViewHolder(v);
-        return vh;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        switch (i){
+            case(TYPE_MEETING):{
+                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.masteritem, viewGroup, false);
+                meetingViewHolder vh = new meetingViewHolder(v);
+                return vh;
+            }
+            case(TYPE_VOTE):{
+                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.voteitem, viewGroup, false);
+                voteViewHolder vh = new voteViewHolder(v);
+                return vh;
+            }
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(final masterViewHolder ViewHolder, int i) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder ViewHolder, int i) {
+        if(ViewHolder instanceof meetingViewHolder){
+            onBindMeetingViewHolder((meetingViewHolder)ViewHolder,i,datalist.get(i));
+        }
+    }
+
+    public void onBindMeetingViewHolder(final meetingViewHolder ViewHolder,int position,Object Meetingitem){
         final Intent intent = new Intent();
-        final masterItem item = datalist.get(i);
-        ViewHolder.listButton.setText(datalist.get(i).title);
-        ViewHolder.listButton.setOnClickListener(new View.OnClickListener() {
+        final masterItem item = (masterItem)Meetingitem;
+        if(item.startTime!=null){
+            ViewHolder.title.setText("會議名稱："+item.title);
+            ViewHolder.startTime.setText("開始時間："+item.startTime.toString());
+            ViewHolder.endTime.setText("結束時間："+item.endTime.toString());
+        }else{
+            ViewHolder.title.setText(item.title);
+            ViewHolder.startTime.setVisibility(View.GONE);
+            ViewHolder.endTime.setVisibility(View.GONE);
+        }
+        ViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("meeting_id",item.id);
-                editor.putString("meeting_title",item.title);
+                editor.putString("meeting_id", item.id);
+                editor.putString("meeting_title", item.title);
                 editor.commit();
-                intent.setClass(mContext,item.cls);
-                ViewHolder.listButton.setElevation(5);
-                ViewHolder.listButton.setTranslationZ(8);
-                View sharedView = ViewHolder.listButton;
+                intent.setClass(mContext, item.cls);
+                View sharedView = ViewHolder.cardView;
                 if(item.isAnimate){
                     ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, sharedView, item.transitionName);
                     mContext.startActivity(intent, transitionActivityOptions.toBundle());
@@ -63,6 +89,14 @@ public class masterAdapter extends RecyclerView.Adapter<masterViewHolder> {
         });
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if(datalist.get(position) instanceof masterItem){
+            return TYPE_MEETING;
+        }else{
+            return TYPE_VOTE;
+        }
+    }
     @Override
     public int getItemCount() {
         return datalist.size();
@@ -81,11 +115,22 @@ public class masterAdapter extends RecyclerView.Adapter<masterViewHolder> {
         }
     }
 }
-class masterViewHolder extends RecyclerView.ViewHolder {
-    Button listButton;
-    public masterViewHolder(View itemView){
+class meetingViewHolder extends RecyclerView.ViewHolder {
+    TextView title;
+    TextView startTime;
+    TextView endTime;
+    CardView cardView;
+    public meetingViewHolder(View itemView){
         super(itemView);
-        listButton = (Button)itemView.findViewById(R.id.itembutton);
+        title = (TextView)itemView.findViewById(R.id.title);
+        startTime = (TextView)itemView.findViewById(R.id.startTime);
+        endTime = (TextView)itemView.findViewById(R.id.endTime);
+        cardView = (CardView)itemView.findViewById(R.id.meetingCard);
+    }
+}
+class voteViewHolder extends RecyclerView.ViewHolder{
+    public voteViewHolder(View itemView) {
+        super(itemView);
     }
 }
 class masterItem{
