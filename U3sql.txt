@@ -15,11 +15,13 @@ salt varchar(60) not null,
 nick_name nvarchar(20),
 primary key(name)
 );
+
 create table saveuser(
 u_name varchar(20) foreign key references theuser(name),
 android_id varchar(16),
 primary key(u_name)
 );
+
 create table thegroup(
  name nvarchar(30) not null,
  founder varchar(20) foreign key references theuser(name),

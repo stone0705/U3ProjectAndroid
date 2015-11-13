@@ -93,7 +93,7 @@ public class masterAdapter extends RecyclerView.Adapter {
 
     public void onBindVoteViewHolder(final voteViewHolder ViewHolder,int position,Object voteItem){
         final Intent intent = new Intent();
-        voteItem item = (voteItem)voteItem;
+        final voteItem item = (voteItem)voteItem;
         ViewHolder.title.setText("投票名稱："+item.title);
         ViewHolder.createman.setText("發起人："+item.createman);
         ViewHolder.startTime.setText("開始時間："+item.startTime.toString());
@@ -101,7 +101,16 @@ public class masterAdapter extends RecyclerView.Adapter {
         ViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editor.putString("vote_id", item.id);
+                editor.putString("vote_title", item.title);
+                editor.putString("vote_sts", item.startTime.toString());
+                editor.putString("vote_ets", item.endTime.toString());
+                editor.putString("vote_createman", item.createman);
+                editor.commit();
+                intent.setClass(mContext, item.cls);
+                View sharedView = ViewHolder.cardView;
+                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(mActivity, sharedView, item.transitionName);
+                mContext.startActivity(intent, transitionActivityOptions.toBundle());
             }
         });
     }

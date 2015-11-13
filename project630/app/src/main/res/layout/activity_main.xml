@@ -35,10 +35,10 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
             android:hint="帳號"
             android:ems="10"
-            android:digits="1234567890qwertyuiopasdfghjklzxcvbnm"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
             android:maxLength="20"
             android:id="@+id/editText"
             android:layout_gravity="center_horizontal" />

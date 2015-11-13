@@ -43,7 +43,7 @@
                 android:hint="帳號"
                 android:ems="20"
                 android:id="@+id/account"
-                android:digits="1234567890qwertyuiopasdfghjklzxcvbnm"
+                android:digits="1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
                 android:maxLength="20"
                 android:layout_gravity="center_horizontal" />
         </android.support.design.widget.TextInputLayout>>

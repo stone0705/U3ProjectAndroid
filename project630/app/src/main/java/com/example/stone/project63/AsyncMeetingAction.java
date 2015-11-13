@@ -46,7 +46,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
             Socket socket = new Socket(InetAddress.getByName(mContext.getString(R.string.myip)),5050);
             newInMeetingActivity.socket = socket;
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard(params[0],params[1],params[2],params[3],params[4],params[5]));
+            bw.write(StringRule.standard("1031",params[0],params[1],params[2],params[3],params[4]));
             bw.flush();
             final BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String[] divide;

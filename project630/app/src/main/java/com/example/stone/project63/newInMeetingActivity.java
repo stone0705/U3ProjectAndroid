@@ -53,14 +53,12 @@ public class newInMeetingActivity extends Activity {
         setupWindowAnimations();
         teamname.setText(settings.getString("group", "") + "=" + settings.getString("meeting_title", ""));
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //mAdapter = new RVAdapter(msglist,this);
-        //mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AsyncSentAction sentAction = new AsyncSentAction(newInMeetingActivity.this);
-                sentAction.execute("1032",settings.getString("account",""),msg.getText().toString(),settings.getString("meeting_id", ""),settings.getString("android_id",""));
+                sentAction.execute(settings.getString("account",""),msg.getText().toString(),settings.getString("meeting_id", ""),settings.getString("android_id",""));
             }
         });
     }
@@ -83,7 +81,7 @@ public class newInMeetingActivity extends Activity {
         mAdapter = new RVAdapter(msglist,this);
         mRecyclerView.setAdapter(mAdapter);
         AsyncMeetingAction action = new AsyncMeetingAction(newInMeetingActivity.this);
-        action.execute("1031",settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""),settings.getString("group",""),settings.getString("founder",""));
+        action.execute(settings.getString("account",""),settings.getString("android_id",""),settings.getString("meeting_id",""),settings.getString("group",""),settings.getString("founder",""));
     }
 
     @Override
