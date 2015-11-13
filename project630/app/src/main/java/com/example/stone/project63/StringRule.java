@@ -49,7 +49,7 @@ public class StringRule {
     }
 
     static int rule(String findrule){
-        //傳送完成 0000
+        //傳送完成 0000(傳送連續封包時使用)
         rulemap.put("n0000", 1);
         //註冊 1000 帳號 密碼 暱稱
         rulemap.put("n1000", 4);
@@ -63,8 +63,8 @@ public class StringRule {
         rulemap.put("n1032", 5);
         //創建 Vote 1040 帳號 android_id 群組 founder title start_time end_time
         rulemap.put("n1040",8);
-        //創建Vote選項  1041 帳號 android_id vote_id option_string
-        rulemap.put("n1041",4);
+        //創建Vote選項  1041 帳號 android_id 群組 founder vote_id option_string
+        rulemap.put("n1041",7);
         //獲得筆記列表 1070 帳號 android_id 群組 founder
         rulemap.put("n1070", 5);
         //獲得會議列表 1071 帳號 android_id 群組 founder

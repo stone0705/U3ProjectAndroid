@@ -33,12 +33,12 @@ public class CreateVoteAdapter extends RecyclerView.Adapter<CreateVoteViewHolder
     @Override
     public void onBindViewHolder(final CreateVoteViewHolder holder, final int position) {
         holder.delcheck.setChecked(false);
+        holder.myCustomEditTextListener.updatePosition(position);
+        holder.content.setText(datalist.get(position).content);
         if(datalist.get(position).isOpen){
             holder.no.setVisibility(View.VISIBLE);
             holder.input1.setVisibility(View.VISIBLE);
             holder.delcheck.setVisibility(View.VISIBLE);
-            holder.myCustomEditTextListener.updatePosition(position);
-            holder.content.setText(datalist.get(position).content);
             holder.open.setVisibility(View.GONE);
             if(datalist.get(position).hide == true){
                 holder.no.setVisibility(View.GONE);

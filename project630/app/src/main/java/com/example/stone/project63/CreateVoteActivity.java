@@ -47,7 +47,7 @@ public class CreateVoteActivity extends Activity {
         tvStartTime = (TextView) findViewById(R.id.tvStartTime);
         tvEndDate = (TextView) findViewById(R.id.tvEndDate);
         tvEndTime = (TextView) findViewById(R.id.tvEndTime);
-        tvTitle = (TextView) findViewById(R.id.meetingTitle);
+        tvTitle = (TextView) findViewById(R.id.voteTitle);
 
         btStartDate = (Button) findViewById(R.id.btStartDate);
         btStartTime = (Button) findViewById(R.id.btStartTime);
@@ -207,27 +207,42 @@ public class CreateVoteActivity extends Activity {
                         dialog.dismiss();
                     }
                 });
-        if(tvStartDate.getText().toString().equals("")||tvEndDate.getText().toString().equals("")
-                ||tvStartTime.getText().toString().equals("")||tvEndTime.getText().toString().equals("")||tvTitle.getText().toString().equals("")){
-            response = "請輸入完所有項目";
-            alertDialog.setMessage(response);
-            alertDialog.show();
-        }else{
-            scalendar = new GregorianCalendar(sYear,sMonth,sDay,sHour,sMinute);
-            sts = new Timestamp(scalendar.getTimeInMillis());
-            ecalendar = new GregorianCalendar(eYear,eMonth,eDay,eHour,eMinute);
-            ets = new Timestamp(ecalendar.getTimeInMillis());
-            if(ets.after(sts)){
-                /*
-                AsyncCreateMeeting action = new AsyncCreateMeeting(CreateMeetingActivity.this);
-                action.execute(settings.getString("account",""),settings.getString("android_id",""),settings.getString("group","")
-                        ,settings.getString("founder",""),tvTitle.getText().toString(),sts.toString(),ets.toString());
-                        */
-            }else{
-                response = "結束時間必須在開始時間之後";
+        int count = 0;
+        for(int i =0 ;i<datalist.size();i++){
+            CreateVoteItem item = datalist.get(i);
+            System.out.println("for"+i);
+            System.out.println("hide"+item.hide+"   content"+item.content+"    isopen "+item.isOpen);
+            if(!item.hide && !item.content.equals("")){
+                count++;
+                System.out.println("count++");
+            }
+        }if(count>1){
+            if(tvStartDate.getText().toString().equals("")||tvEndDate.getText().toString().equals("")
+                    ||tvStartTime.getText().toString().equals("")||tvEndTime.getText().toString().equals("")||tvTitle.getText().toString().equals("")){
+                response = "請輸入完所有項目";
                 alertDialog.setMessage(response);
                 alertDialog.show();
+            }else{
+                scalendar = new GregorianCalendar(sYear,sMonth,sDay,sHour,sMinute);
+                sts = new Timestamp(scalendar.getTimeInMillis());
+                ecalendar = new GregorianCalendar(eYear,eMonth,eDay,eHour,eMinute);
+                ets = new Timestamp(ecalendar.getTimeInMillis());
+                if(ets.after(sts)){
+
+                    AsyncCreateVote action = new AsyncCreateVote(CreateVoteActivity.this,datalist);
+                    action.execute(settings.getString("account",""),settings.getString("android_id",""),settings.getString("group","")
+                            ,settings.getString("founder",""),tvTitle.getText().toString(),sts.toString(),ets.toString());
+
+                }else{
+                    response = "結束時間必須在開始時間之後";
+                    alertDialog.setMessage(response);
+                    alertDialog.show();
+                }
             }
+        }else{
+            response = "請至少輸入完2個選項";
+            alertDialog.setMessage(response);
+            alertDialog.show();
         }
     }
 }
