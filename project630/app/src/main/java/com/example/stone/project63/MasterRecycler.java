@@ -14,11 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class MasterRecycler extends Fragment {
-        masterAdapter mAdapter;
+    masterAdapter mAdapter;
     ArrayList<Object> datalset = new ArrayList<Object>();
     Handler mHandler = new Handler();
     private int type;
@@ -59,13 +58,13 @@ public class MasterRecycler extends Fragment {
                 break;
             }
             case 2:{
-                newAsyncGetList async = new newAsyncGetList(recyclerView.getContext(),MasterRecycler.this);
+                AsyncGetList async = new AsyncGetList(recyclerView.getContext(),MasterRecycler.this);
                 async.execute("1071",settings.getString("account",""),settings.getString("android_id",""),settings.getString("group",""),settings.getString("founder",""));
                 break;
             }
             case 3:{
-
-                newAsyncGetList async = new newAsyncGetList(recyclerView.getContext(),MasterRecycler.this);
+                AsyncGetList async = new AsyncGetList(recyclerView.getContext(),MasterRecycler.this);
+                async.execute("1072",settings.getString("account",""),settings.getString("android_id",""),settings.getString("group",""),settings.getString("founder",""));
                 break;
             }
             case 4:{

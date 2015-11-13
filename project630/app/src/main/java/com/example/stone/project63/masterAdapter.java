@@ -56,16 +56,18 @@ public class masterAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder ViewHolder, int i) {
         if(ViewHolder instanceof meetingViewHolder){
             onBindMeetingViewHolder((meetingViewHolder)ViewHolder,i,datalist.get(i));
+        }else if(ViewHolder instanceof voteViewHolder){
+            onBindVoteViewHolder((voteViewHolder)ViewHolder,i,datalist.get(i));
         }
     }
 
-    public void onBindMeetingViewHolder(final meetingViewHolder ViewHolder,int position,Object Meetingitem){
+    public void onBindMeetingViewHolder(final meetingViewHolder ViewHolder,int position,Object meetingItem){
         final Intent intent = new Intent();
-        final masterItem item = (masterItem)Meetingitem;
+        final masterItem item = (masterItem)meetingItem;
         if(item.startTime!=null){
             ViewHolder.title.setText("會議名稱："+item.title);
             ViewHolder.startTime.setText("開始時間："+item.startTime.toString());
-            ViewHolder.endTime.setText("結束時間："+item.endTime.toString());
+            ViewHolder.endTime.setText("結束時間：" + item.endTime.toString());
         }else{
             ViewHolder.title.setText(item.title);
             ViewHolder.startTime.setVisibility(View.GONE);
@@ -89,13 +91,28 @@ public class masterAdapter extends RecyclerView.Adapter {
         });
     }
 
+    public void onBindVoteViewHolder(final voteViewHolder ViewHolder,int position,Object voteItem){
+        final Intent intent = new Intent();
+        voteItem item = (voteItem)voteItem;
+        ViewHolder.title.setText("投票名稱："+item.title);
+        ViewHolder.createman.setText("發起人："+item.createman);
+        ViewHolder.startTime.setText("開始時間："+item.startTime.toString());
+        ViewHolder.endTime.setText("結束時間："+item.endTime.toString());
+        ViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
     @Override
     public int getItemViewType(int position) {
         if(datalist.get(position) instanceof masterItem){
             return TYPE_MEETING;
-        }else{
+        }else if(datalist.get(position) instanceof voteItem){
             return TYPE_VOTE;
-        }
+        }return -1;
     }
     @Override
     public int getItemCount() {
@@ -103,6 +120,10 @@ public class masterAdapter extends RecyclerView.Adapter {
     }
 
     public void additem(masterItem item) {
+        datalist.add(item);
+        this.notifyItemInserted(datalist.size());
+    }
+    public void additem(voteItem item) {
         datalist.add(item);
         this.notifyItemInserted(datalist.size());
     }
@@ -129,8 +150,38 @@ class meetingViewHolder extends RecyclerView.ViewHolder {
     }
 }
 class voteViewHolder extends RecyclerView.ViewHolder{
+    TextView title;
+    TextView createman;
+    TextView startTime;
+    TextView endTime;
+    CardView cardView;
     public voteViewHolder(View itemView) {
         super(itemView);
+        title = (TextView)itemView.findViewById(R.id.title);
+        createman = (TextView)itemView.findViewById(R.id.createman);
+        startTime = (TextView)itemView.findViewById(R.id.startTime);
+        endTime = (TextView)itemView.findViewById(R.id.endTime);
+        cardView = (CardView)itemView.findViewById(R.id.meetingCard);
+    }
+}
+class voteItem{
+    Timestamp startTime;
+    Timestamp endTime;
+    String id;
+    String title = "default";
+    String createman;
+    String transitionName;
+    boolean isAnimate;
+    Class<?> cls;
+    public voteItem(String id,String title,String createman,Timestamp startTime,Timestamp endTime,String transitionName,Class<?> cls){
+        this.id = id;
+        this.createman = createman;
+        this.title = title;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.transitionName = transitionName;
+        this.isAnimate = isAnimate;
+        this.cls = cls;
     }
 }
 class masterItem{

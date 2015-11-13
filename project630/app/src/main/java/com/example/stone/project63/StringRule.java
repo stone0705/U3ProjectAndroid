@@ -105,10 +105,12 @@ public class StringRule {
         rulemap.put("n2010", 1);
         //登入失敗 帳號或密碼錯誤 2011
         rulemap.put("n2011", 1);
-        //傳送筆記列表 id title start_time end_time
+        //傳送筆記列表  2070  id title start_time end_time
         rulemap.put("n2070", 5);
+        //傳送會議列表   2071  id title start_time end_time
         rulemap.put("n2071", 5);
-        rulemap.put("n2072", 5);
+        //傳送投票列表   2072  id title start_time end_time 發起人
+        rulemap.put("n2072", 6);
         rulemap.put("n2073", 5);
         //帳號在其他裝置上登入 2077
         rulemap.put("n2077", 1);

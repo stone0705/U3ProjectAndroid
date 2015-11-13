@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by stone on 2015/8/12.
  */
-public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
+public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
     ProgressDialog dialog;
@@ -30,7 +30,7 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
     String response;
     Context mContext;
     ArrayList<masterItem> list;
-    public newAsyncGetList(Context mContext,MasterRecycler MR){
+    public AsyncGetList(Context mContext, MasterRecycler MR){
         this.mContext = mContext;
         dialog = new ProgressDialog(mContext);
         this.MR = MR;
@@ -104,6 +104,9 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
                         break;
                     }
                     case("2072"):{
+                        voteItem item = new voteItem(divide[1],divide[2] ,divide[5], Timestamp.valueOf(divide[3]),Timestamp.valueOf(divide[4]),"inVoteCard",invoteActivity.class);
+                        update updateVoteItem =new update(item);
+                        MR.mHandler.post(updateVoteItem);
                         break;
                     }
                     case("2073"):{
@@ -149,12 +152,27 @@ public class newAsyncGetList extends AsyncTask<String,Integer,Integer> {
     }
     private class update implements Runnable {
         masterItem a;
+        voteItem b;
+        int type = -1;
         public update(masterItem a){
             this.a = a;
+            type = 1;
+        }
+        public update(voteItem b){
+            this.b = b;
+            type = 2;
         }
         @Override
         public void run() {
-            MR.mAdapter.additem(a);
+            switch(type){
+                case(1):{
+                    MR.mAdapter.additem(a);
+                    break;
+                }
+                case(2):{
+                    MR.mAdapter.additem(b);
+                }
+            }
         }
     }
 }
