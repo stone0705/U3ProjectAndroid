@@ -90,7 +90,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                 }
                 switch (divide[0]){
                     case"2031":{
-                        if(params[1].equals(divide[1])){
+                        if(params[0].equals(divide[1])){
                             newInMeetingActivity.mHandler.post(new update(new meetingMsg(true,divide[2],divide[1])));
                         }else{
                             newInMeetingActivity.mHandler.post(new update(new meetingMsg(false,divide[2],divide[1])));
@@ -98,7 +98,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                         break;
                     }
                     case"2030":{
-                        if(params[1].equals(divide[1])){
+                        if(params[0].equals(divide[1])){
                             tempMsg.add(new meetingMsg(true,divide[2],divide[1]));
                         }else{
                             tempMsg.add(new meetingMsg(false,divide[2],divide[1]));
@@ -120,7 +120,7 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                     try{
                         while((answer = br.readLine())!=null){
                             String[] divide = StringRule.divide(answer);
-                            if(params[1].equals(divide[1])){
+                            if(params[0].equals(divide[1])){
                                 newInMeetingActivity.mHandler.post(new update(new meetingMsg(true,divide[2],divide[1])));
                             }else{
                                 newInMeetingActivity.mHandler.post(new update(new meetingMsg(false,divide[2],divide[1])));

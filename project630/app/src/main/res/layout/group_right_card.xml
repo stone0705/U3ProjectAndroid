@@ -87,7 +87,8 @@
                     android:id="@+id/noteRight"
                     android:layout_weight="0.25"
                     android:checked="false"
-                    android:clickable="false"/>
+                    android:clickable="false"
+                    android:visibility="gone"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -110,7 +111,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="管理行事歷"
+                    android:text="管理提醒"
                     android:id="@+id/schRight"
                     android:layout_weight="0.25"
                     android:checked="false"

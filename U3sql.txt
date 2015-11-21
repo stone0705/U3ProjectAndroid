@@ -18,8 +18,11 @@ primary key(name)
 
 create table saveuser(
 u_name varchar(20) foreign key references theuser(name),
-android_id varchar(16),
+
+android_id varchar(16),
+
 primary key(u_name)
+
 );
 
 create table thegroup(
@@ -74,6 +77,18 @@ u_name varchar(20) foreign key references theuser(name),
 option_id int,
 isvote bit
 )
+
+create table group_remind(
+Id int not null identity(1, 1) primary key,
+ g_name nvarchar(30) ,
+ g_founder varchar(20) ,
+foreign key(g_name,g_founder) references thegroup(name,founder),
+title nvarchar(30),
+createman varchar(20) foreign key references theuser(name),
+content nvarchar(200),
+thetime datetime
+)
+
 
 
 drop table meeting;

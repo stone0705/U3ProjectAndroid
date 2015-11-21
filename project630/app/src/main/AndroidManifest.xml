@@ -13,11 +13,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".invoteActivity"
@@ -80,9 +76,22 @@
             android:label="@string/mastertab" >
         </activity>
         <activity
-            android:windowSoftInputMode="stateHidden|adjustPan"
             android:name=".CreateVoteActivity"
-            android:label="@string/title_activity_create_vote" >
+            android:label="@string/title_activity_create_vote"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".CreateRemindActivity"
+            android:label="@string/title_activity_create_remind" >
+        </activity>
+        <activity
+            android:name=".firstActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">project63</string>
+    <string name="app_name">Umeeting</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_setting">settingActivity</string>
@@ -32,5 +32,7 @@
     <string name="myip">114.35.125.242</string>>
     <string name="mastertab">MasterTabActivity</string>
     <string name="title_activity_create_vote">CreateVoteActivity</string>
+    <string name="title_activity_create_remind">CreateRemindActivity</string>
+    <string name="title_activity_first">firstActivity</string>
 
 </resources>

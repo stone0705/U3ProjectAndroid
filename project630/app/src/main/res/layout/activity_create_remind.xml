@@ -1,17 +1,17 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:card_view="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_margin="5dp"
-android:orientation="horizontal"
-android:id="@+id/CreateVoteCard"
-android:layout_marginLeft="@dimen/activity_vertical_margin"
-android:layout_marginRight="@dimen/activity_vertical_margin"
-android:layout_marginTop="2dip"
-android:layout_marginBottom="2dip"
-card_view:cardUseCompatPadding="true"
-card_view:cardElevation="8dp"
-card_view:cardCornerRadius="5dp"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="horizontal"
+    android:id="@+id/CreateVoteCard"
+    android:layout_marginLeft="@dimen/activity_vertical_margin"
+    android:layout_marginRight="@dimen/activity_vertical_margin"
+    android:layout_marginTop="2dip"
+    android:layout_marginBottom="2dip"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardElevation="8dp"
+    card_view:cardCornerRadius="5dp"
     >
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
@@ -21,7 +21,6 @@ card_view:cardCornerRadius="5dp"
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context="com.example.stone.project63.CreateMeetingActivity">
 
-
         <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
             android:gravity="center_horizontal">
 
@@ -29,21 +28,35 @@ card_view:cardCornerRadius="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="創建會議"
+                android:text="創建提醒"
                 android:id="@+id/textView8" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="會議標題"
+                android:text="提醒標題"
                 android:id="@+id/textView5" />
 
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/meetingTitle" />
+                android:id="@+id/remindTitle" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="提醒內容" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:maxLength="200"
+                android:id="@+id/remindContent"
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,26 +79,6 @@ card_view:cardCornerRadius="5dp"
                 </Button>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="結束時間"
-                android:id="@+id/textView7" />
-
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
-                <TextView android:id="@+id/tvEndDate" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="wrap_content">
-                </TextView>
-                <Button android:id="@+id/btEndDate" android:layout_height="wrap_content" android:layout_weight="0" android:layout_width="150dp" android:text="選擇日期">
-                </Button>
-            </LinearLayout>
-
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent">
-                <TextView android:id="@+id/tvEndTime" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="wrap_content">
-                </TextView>
-                <Button android:id="@+id/btEndTime" android:layout_height="wrap_content" android:layout_weight="0" android:layout_width="150dp" android:text="選擇時間">
-                </Button>
-            </LinearLayout>
 
             <Button
                 android:layout_width="wrap_content"

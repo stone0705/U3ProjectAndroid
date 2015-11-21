@@ -93,6 +93,9 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
                     break;}
                 switch (divide[0]){
                     case("2070"):{
+                        parentItem item = new parentItem(new childItem(divide[3],divide[4]),divide[1],divide[2],divide[5]);
+                        update updateRemindItem =new update(item);
+                        MR.mHandler.post(updateRemindItem);
                         break;
                     }
                     case("2071"):{
@@ -147,30 +150,43 @@ public class AsyncGetList extends AsyncTask<String,Integer,Integer> {
         alertDialog.setMessage(response);
         if(!pass){
             alertDialog.setMessage(response);
-            alertDialog.show();
+            if(!MasterTabActivity.isShowAlertDialog){
+                alertDialog.show();
+                MasterTabActivity.isShowAlertDialog = true;
+            }
         }
     }
     private class update implements Runnable {
-        masterItem a;
-        voteItem b;
+        parentItem a;
+        masterItem b;
+        voteItem c;
         int type = -1;
-        public update(masterItem a){
+        public update(parentItem a){
             this.a = a;
+            type = 0;
+        }
+        public update(masterItem b){
+            this.b = b;
             type = 1;
         }
-        public update(voteItem b){
-            this.b = b;
+        public update(voteItem c){
+            this.c = c;
             type = 2;
         }
         @Override
         public void run() {
             switch(type){
-                case(1):{
+                case(0):{
                     MR.mAdapter.additem(a);
                     break;
                 }
-                case(2):{
+                case(1):{
                     MR.mAdapter.additem(b);
+                    break;
+                }
+                case(2):{
+                    MR.mAdapter.additem(c);
+                    break;
                 }
             }
         }

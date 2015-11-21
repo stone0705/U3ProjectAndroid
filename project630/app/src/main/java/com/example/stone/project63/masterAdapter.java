@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.sql.Timestamp;
@@ -26,8 +27,10 @@ public class masterAdapter extends RecyclerView.Adapter {
     Context mContext;
     SharedPreferences.Editor editor;
     Activity mActivity;
-    final int TYPE_VOTE = 1;
     final int TYPE_MEETING = 0;
+    final int TYPE_VOTE = 1;
+    final int TYPE_PARENT = 2;
+    final int TYPE_CHILD = 3;
     public masterAdapter(ArrayList<Object> datalist,Context mContext,SharedPreferences settings,Activity mActivity){
         this.datalist = datalist;
         this.mContext = mContext;
@@ -48,6 +51,16 @@ public class masterAdapter extends RecyclerView.Adapter {
                 voteViewHolder vh = new voteViewHolder(v);
                 return vh;
             }
+            case(TYPE_PARENT):{
+                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.parent,viewGroup,false);
+                parentViewHolder vh = new parentViewHolder(v);
+                return vh;
+            }
+            case(TYPE_CHILD):{
+                View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.child,viewGroup,false);
+                childViewHolder vh = new childViewHolder(v);
+                return vh;
+            }
         }
         return null;
     }
@@ -56,8 +69,15 @@ public class masterAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder ViewHolder, int i) {
         if(ViewHolder instanceof meetingViewHolder){
             onBindMeetingViewHolder((meetingViewHolder)ViewHolder,i,datalist.get(i));
-        }else if(ViewHolder instanceof voteViewHolder){
+        }
+        if(ViewHolder instanceof voteViewHolder){
             onBindVoteViewHolder((voteViewHolder)ViewHolder,i,datalist.get(i));
+        }
+        if(ViewHolder instanceof parentViewHolder){
+            onBindParentViewHolder((parentViewHolder)ViewHolder,i,datalist.get(i));
+        }
+        if(ViewHolder instanceof childViewHolder){
+            onBindChildViewHolder((childViewHolder)ViewHolder,i,datalist.get(i));
         }
     }
 
@@ -114,20 +134,60 @@ public class masterAdapter extends RecyclerView.Adapter {
             }
         });
     }
+    public void onBindParentViewHolder(final parentViewHolder vh, final int position,Object parentitem){
+        final parentItem item = (parentItem)parentitem;
+        vh.title.setText("標題："+item.title);
+        vh.createman.setText("建立人："+item.createman);
+        vh.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expand(item, vh.getPosition());
+            }
+        });
+    }
+
+    public void onBindChildViewHolder(childViewHolder vh,int position,Object childitem){
+        childItem item = (childItem)childitem;
+        vh.content.setText("內容："+item.content);
+        vh.time.setText("預定時間：" + item.time);
+    }
+    public void expand(parentItem item,int position){
+        if(item.isexapand){
+            item.isexapand = false;
+            datalist.remove(position+1);
+            notifyItemRemoved(position+1);
+        }else{
+            item.isexapand = true;
+            datalist.add(position+1,item.child);
+            notifyItemInserted(position+1);
+        }
+    }
 
     @Override
     public int getItemViewType(int position) {
         if(datalist.get(position) instanceof masterItem){
             return TYPE_MEETING;
-        }else if(datalist.get(position) instanceof voteItem){
+        }
+        if(datalist.get(position) instanceof voteItem){
             return TYPE_VOTE;
-        }return -1;
+        }
+        if(datalist.get(position) instanceof parentItem){
+            return TYPE_PARENT;
+        }
+        if(datalist.get(position) instanceof childItem){
+            return TYPE_CHILD;
+        }
+        System.out.println("ghujihjk");
+        return -1;
     }
     @Override
     public int getItemCount() {
         return datalist.size();
     }
-
+    public void additem(parentItem item) {
+        datalist.add(item);
+        this.notifyItemInserted(datalist.size());
+    }
     public void additem(masterItem item) {
         datalist.add(item);
         this.notifyItemInserted(datalist.size());
@@ -173,6 +233,27 @@ class voteViewHolder extends RecyclerView.ViewHolder{
         cardView = (CardView)itemView.findViewById(R.id.meetingCard);
     }
 }
+class parentViewHolder extends RecyclerView.ViewHolder{
+    TextView title;
+    TextView createman;
+    RelativeLayout layout;
+    public parentViewHolder(View itemView) {
+        super(itemView);
+        title = (TextView)itemView.findViewById(R.id.remindTitle);
+        createman = (TextView)itemView.findViewById(R.id.remindCreatman);
+        layout = (RelativeLayout)itemView.findViewById(R.id.remindLayout);
+
+    }
+}
+class childViewHolder extends RecyclerView.ViewHolder{
+    TextView content;
+    TextView time;
+    public childViewHolder(View itemView) {
+        super(itemView);
+        content = (TextView)itemView.findViewById(R.id.remindContent);
+        time = (TextView)itemView.findViewById(R.id.remindTime);
+    }
+}
 class voteItem{
     Timestamp startTime;
     Timestamp endTime;
@@ -216,5 +297,26 @@ class masterItem{
         this.transitionName = transitionName;
         this.isAnimate = isAnimate;
         this.cls = cls;
+    }
+}
+class parentItem {
+    childItem child;
+    String id;
+    String title;
+    String createman;
+    boolean isexapand = false;
+    public parentItem(childItem child,String id,String title,String createman){
+        this.child = child;
+        this.title = title;
+        this.id = id;
+        this.createman = createman;
+    }
+}
+class childItem {
+    String content;
+    String time;
+    public childItem(String content,String time){
+        this.content = content;
+        this.time = time;
     }
 }

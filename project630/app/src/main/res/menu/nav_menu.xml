@@ -22,6 +22,9 @@
         <item
             android:id="@+id/nav_createVote"
             android:title="發起投票" />
+        <item
+            android:id="@+id/nav_createRemind"
+            android:title="創建提醒" />
 
     </group>
 </menu>

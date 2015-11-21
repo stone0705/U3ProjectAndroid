@@ -19,7 +19,7 @@ public class invoteActivity extends Activity {
     public static Handler mHandler = new Handler();
     RecyclerView mRecyclerView;
     TextView title,sts,ets,createman;
-    Button voteButton;
+    static Button voteButton;
     SharedPreferences settings;
     public static invoteAdapter mAdapter;
     public static ArrayList<invoteItem> datalist;

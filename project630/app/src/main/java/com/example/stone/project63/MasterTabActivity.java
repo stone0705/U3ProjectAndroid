@@ -3,6 +3,7 @@ package com.example.stone.project63;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +27,10 @@ public class MasterTabActivity extends AppCompatActivity {
     CoordinatorLayout coord;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
-    static boolean ishorizon = false;
+    SharedPreferences settings;
+    final String STORE_NAME = "Settings";
+    String group = "";
+    static boolean isShowAlertDialog = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +41,22 @@ public class MasterTabActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
+        settings = this.getSharedPreferences(STORE_NAME, this.MODE_PRIVATE);
+        group = settings.getString("group", "");
+        if(!group.equals("")){
+            toolbar.setTitle("群組名："+group);
+        }else{
+            toolbar.setTitle("尚未選擇群組");
+        }
         setSupportActionBar(toolbar);
         final ViewPagerAdapter vpa = new ViewPagerAdapter(getSupportFragmentManager());
-        MasterRecycler r1 = MasterRecycler.newInstance(1);
-        MasterRecycler r2 = MasterRecycler.newInstance(2);
-        MasterRecycler r3 = MasterRecycler.newInstance(3);
-        MasterRecycler r4 = MasterRecycler.newInstance(4);
-        MasterRecycler r5 = MasterRecycler.newInstance(5);
-        vpa.add(r1, "筆記");
+        MasterRecycler r2 = MasterRecycler.newInstance(1);
+        MasterRecycler r3 = MasterRecycler.newInstance(2);
+        MasterRecycler r4 = MasterRecycler.newInstance(3);
+        MasterRecycler r5 = MasterRecycler.newInstance(4);
+        vpa.add(r4, "提醒");
         vpa.add(r2,"會議");
         vpa.add(r3,"投票");
-        vpa.add(r4, "行事曆");
         vpa.add(r5, "設定");
         viewPager.setAdapter(vpa);
         viewPager.setOffscreenPageLimit(4);
@@ -104,6 +114,11 @@ public class MasterTabActivity extends AppCompatActivity {
                         intent.setClass(MasterTabActivity.this,CreateVoteActivity.class);
                         startActivity(intent);
                     }
+                    case(R.id.nav_createRemind):{
+                        Intent intent = new Intent();
+                        intent.setClass(MasterTabActivity.this,CreateRemindActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 menuItem.setChecked(false);
                 drawerLayout.closeDrawers();
@@ -128,6 +143,7 @@ public class MasterTabActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            drawerLayout.openDrawer(Gravity.RIGHT);
             return true;
         }
 

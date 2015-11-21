@@ -55,22 +55,21 @@ public class MasterRecycler extends Fragment {
         recyclerView.setAdapter(mAdapter);
         switch(type){
             case 1:{
-                break;
-            }
-            case 2:{
                 AsyncGetList async = new AsyncGetList(recyclerView.getContext(),MasterRecycler.this);
                 async.execute("1071",settings.getString("account",""),settings.getString("android_id",""),settings.getString("group",""),settings.getString("founder",""));
                 break;
             }
-            case 3:{
+            case 2:{
                 AsyncGetList async = new AsyncGetList(recyclerView.getContext(),MasterRecycler.this);
                 async.execute("1072",settings.getString("account",""),settings.getString("android_id",""),settings.getString("group",""),settings.getString("founder",""));
                 break;
             }
-            case 4:{
+            case 3:{
+                AsyncGetList async = new AsyncGetList(recyclerView.getContext(),MasterRecycler.this);
+                async.execute("1070",settings.getString("account",""),settings.getString("android_id",""),settings.getString("group",""),settings.getString("founder",""));
                 break;
             }
-            case 5:{
+            case 4:{
                 mAdapter.additem(new masterItem("","創建群組","",false,CreateGroupActivity.class));
                 mAdapter.additem(new masterItem("","尋找群組","",false,FindGroupActivity.class));
                 mAdapter.additem(new masterItem("","切換群組","",false,SelectGroupActivity.class));
@@ -78,6 +77,7 @@ public class MasterRecycler extends Fragment {
                 mAdapter.additem(new masterItem("","審核成員","",false,GetNotJoinListActivity.class));
                 mAdapter.additem(new masterItem("","創建會議","",false,CreateMeetingActivity.class));
                 mAdapter.additem(new masterItem("","發起投票","",false,CreateVoteActivity.class));
+                mAdapter.additem(new masterItem("","創建提醒","",false,CreateRemindActivity.class));
                 break;
             }
         }

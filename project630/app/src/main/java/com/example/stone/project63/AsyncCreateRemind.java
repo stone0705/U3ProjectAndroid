@@ -1,16 +1,11 @@
 package com.example.stone.project63;
 
-/**
- * Created by stone on 2015/11/14.
- */
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,16 +15,16 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Created by stone on 2015/8/18.
+ * Created by stone on 2015/11/21.
  */
-public class AsyncEnterVote extends AsyncTask<String,Integer,Integer> {
+public class AsyncCreateRemind extends AsyncTask<String,Integer,Integer> {
     final int LONGTIME = 8;
     static int time;
     ProgressDialog dialog;
     boolean pass;
     String response;
     Context mContext;
-    public AsyncEnterVote(Context mContext){
+    public AsyncCreateRemind(Context mContext){
         this.mContext = mContext;
         dialog = new ProgressDialog(mContext);
     }
@@ -40,9 +35,9 @@ public class AsyncEnterVote extends AsyncTask<String,Integer,Integer> {
         super.onPreExecute();
         // 背景工作處理"前"需作的事
         dialog.setMessage("請等待");
-        dialog.setTitle("尋找中");
+        dialog.setTitle("創建中");
         dialog.setCancelable(false);
-        //dialog.show();
+        dialog.show();
     }
     @Override
     protected Integer doInBackground(String... params) {
@@ -51,7 +46,7 @@ public class AsyncEnterVote extends AsyncTask<String,Integer,Integer> {
         try{
             Socket socket = new Socket(InetAddress.getByName(mContext.getString(R.string.myip)),5050);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bw.write(StringRule.standard("1042",params[0],params[1],params[2]));
+            bw.write(StringRule.standard("1020",params[0],params[1],params[2],params[3],params[4],params[5],params[6]));
             bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             time = 0;
@@ -75,36 +70,11 @@ public class AsyncEnterVote extends AsyncTask<String,Integer,Integer> {
                     throw new Exception("long time");
                 }
             }
-            String answer = br.readLine();
+            String answer;
+            answer = br.readLine();
             String[] dString = StringRule.divide(answer);
-            invoteItem item;
-            while (true){
-                if(dString[0].equals("2041")){
-                    item = new invoteItem(dString[1],dString[2],Integer.parseInt(dString[3]));
-                    invoteActivity.mHandler.post(new update(item));
-                    answer =  br.readLine();
-                    dString = StringRule.divide(answer);
-                }else{
-                    switch (dString[0]){
-                        case("0000"):{
-                            response = StringRule.responseString("0000");
-                            pass = StringRule.isSucces("0000");
-                            break;
-                        }
-                        case("2197"):{
-                            response = StringRule.responseString("2197");
-                            pass = StringRule.isSucces("2197");
-                            break;
-                        }
-                        case("2198"):{
-                            response = StringRule.responseString("2198");
-                            pass = StringRule.isSucces("2198");
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
+            pass = StringRule.isSucces(dString[0]);
+            response = StringRule.responseString(dString[0]);
             socket.close();
         }
         catch (Exception ex){
@@ -121,30 +91,21 @@ public class AsyncEnterVote extends AsyncTask<String,Integer,Integer> {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
+        final Intent intent = new Intent();
         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
         alertDialog.setTitle("Alert");
         alertDialog.setMessage("Alert message to be shown");
-        alertDialog.setMessage(response);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        if(pass){
+                            intent.setClass(mContext,MasterTabActivity.class);
+                            mContext.startActivity(intent);
+                        }
                     }
                 });
-        if(!pass){
-            invoteActivity.voteButton.setVisibility(View.GONE);
-            alertDialog.setMessage(response);
-            alertDialog.show();
-        }
-    }
-    private class update implements Runnable{
-        invoteItem a;
-        public update(invoteItem a){
-            this.a = a;
-        }
-        @Override
-        public void run() {
-            invoteActivity.mAdapter.additem(a);
-        }
+        alertDialog.setMessage(response);
+        alertDialog.show();
     }
 }

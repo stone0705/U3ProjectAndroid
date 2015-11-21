@@ -31,8 +31,7 @@ public class RVAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.msg_card, viewGroup, false);
-        View popupWindow = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.popup_window, viewGroup, false);
-        MyViewHolder vh = new MyViewHolder(v,popupWindow);
+        MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
@@ -72,22 +71,11 @@ class MyViewHolder extends RecyclerView.ViewHolder {
     TextView account;
     TextView msg;
     CardView card;
-    public MyViewHolder(View itemView,View popupWindow) {
+    public MyViewHolder(View itemView) {
         super(itemView);
         account = (TextView)itemView.findViewById(R.id.account);
         msg = (TextView)itemView.findViewById(R.id.msg);
         card = (CardView)itemView.findViewById(R.id.msgCard);
-        final PopupWindow mPopupWindow;
-        mPopupWindow = new PopupWindow(popupWindow, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupWindow.dismiss();
-                mPopupWindow.showAsDropDown(card);
-            }
-        });
     }
 
 }
