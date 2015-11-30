@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
@@ -76,11 +77,17 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
             while(socket.isConnected()){
                 if((answer = br.readLine())==null){break;}
                 divide = StringRule.divide(answer);
-                if(divide[0].equals("0000")||divide[0].equals("2077")||divide[0].equals("2078")||divide[0].equals("2079")){
+                if(divide[0].equals("0000")||divide[0].equals("2077")||divide[0].equals("2078")||divide[0].equals("2079")||divide[0].equals("2197")||divide[0].equals("2198")){
                     pass = StringRule.isSucces(divide[0]);
                     response = StringRule.responseString(divide[0]);
                     if(divide[0].equals("2077")){
                         backtologin = true;
+                    }
+                    if(divide[0].equals("2197")){
+                        newInMeetingActivity.timeState = -1;
+                    }
+                    if(divide[0].equals("2198")){
+                        newInMeetingActivity.timeState = 1;
                     }
                     if(divide[0].equals("0000")&&statecount < 1){
                         statecount++;
@@ -161,6 +168,11 @@ public class AsyncMeetingAction extends AsyncTask<String,Integer,Integer> {
                     });
             alertDialog.setMessage(response);
             if(!pass){
+                try {
+                    newInMeetingActivity.socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 alertDialog.setMessage(response);
                 alertDialog.show();
             }

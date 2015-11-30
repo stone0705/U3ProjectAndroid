@@ -27,6 +27,7 @@ public class newInMeetingActivity extends Activity {
     public static RecyclerView mRecyclerView;
     public static Handler mHandler = new Handler();
     public static RVAdapter mAdapter;
+    public static int timeState = 0;
     private RecyclerView.LayoutManager mLayoutManager;
     public static ArrayList<meetingMsg> msglist = new ArrayList<meetingMsg>();
     SharedPreferences settings;
@@ -57,8 +58,10 @@ public class newInMeetingActivity extends Activity {
         sent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AsyncSentAction sentAction = new AsyncSentAction(newInMeetingActivity.this);
-                sentAction.execute(settings.getString("account",""),msg.getText().toString(),settings.getString("meeting_id", ""),settings.getString("android_id",""));
+                if(timeState == 0){
+                    AsyncSentAction sentAction = new AsyncSentAction(newInMeetingActivity.this);
+                    sentAction.execute(settings.getString("account",""),msg.getText().toString(),settings.getString("meeting_id", ""),settings.getString("android_id",""));
+                }
             }
         });
     }
@@ -76,6 +79,7 @@ public class newInMeetingActivity extends Activity {
     @Override
     public void onResume(){
         super.onResume();
+        timeState = 0;
         selfdisconnect = false;
         msglist = new ArrayList<meetingMsg>();
         mAdapter = new RVAdapter(msglist,this);
